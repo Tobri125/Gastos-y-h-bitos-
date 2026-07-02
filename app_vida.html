@@ -162,14 +162,23 @@
   .ringInfo-big{font-size:24px;font-weight:800;color:var(--green);line-height:1}
   .ringInfo-sub{font-size:11px;color:var(--muted);margin-top:3px}
   .ringInfo-best{font-size:11px;color:var(--orange);font-weight:600;margin-top:5px}
+  .ringInfo-count{font-size:12px;color:var(--green);font-weight:700;margin-top:4px}
+  .stoic-quote{background:#f8fafc;border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:11px 14px;margin:4px 0 14px;font-size:12.5px;font-style:italic;color:var(--dark);line-height:1.5}
+  .stoic-quote .stoic-author{display:block;font-style:normal;font-size:11px;color:var(--muted);font-weight:600;margin-top:5px}
   .chartDivider{height:1px;background:var(--line);margin:0 -20px 16px}
   .chartTitle{font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
-  .barsWeek{display:flex;justify-content:space-between;gap:8px;align-items:flex-end;height:90px;margin-bottom:14px}
-  .barCol{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
-  .barTrack{width:100%;height:100%;background:#f8fafc;border-radius:7px;display:flex;flex-direction:column-reverse;overflow:hidden;gap:2px;padding:2px}
+  .barsWeek{display:flex;justify-content:space-between;gap:8px;align-items:flex-end;height:100px;margin-bottom:14px}
+  .barCol{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;cursor:pointer}
+  .barTrack{width:100%;flex:1;background:#eef1f5;border-radius:7px;display:flex;flex-direction:column-reverse;overflow:hidden;min-height:0;position:relative}
+  .barFill{width:100%;border-radius:7px 7px 0 0;transition:height .35s ease,background .3s}
+  .barDone{position:absolute;top:4px;left:0;right:0;text-align:center;font-size:12px;color:#fff;font-weight:700}
   .barSeg{width:100%;border-radius:2px;transition:.3s}
-  .barSeg.empty{background:transparent}
-  .barLb{font-size:9px;color:var(--faint);font-weight:600}
+  .barSeg.empty{background:#f8fafc;box-shadow:inset 0 0 0 1px #e5e9ef}
+  .barLb{font-size:10px;color:var(--muted);font-weight:700}
+  .barCount{font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;line-height:1.4}
+  .barCount.full{background:#e8f7f0;color:#10b981}
+  .barCount.partial{background:#fdf4e8;color:#f59e0b}
+  .barCount.off{background:#f1f5f9;color:#b8c0cc}
   .barCol.today .barTrack{outline:2px dashed var(--green);outline-offset:1px}
   .barsLegend{display:flex;flex-wrap:wrap;gap:8px 14px;padding-top:4px}
   .legItem{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
@@ -389,9 +398,11 @@
             <h3>🔥 Racha actual</h3>
             <div class="ringInfo-big" id="hStreak">0 días</div>
             <div class="ringInfo-sub" id="hStreakSub">Empieza hoy</div>
+            <div class="ringInfo-count" id="hTodayCount">0 de 0 hoy</div>
             <div class="ringInfo-best">🏆 Mejor: <span id="hBest">0 días</span></div>
           </div>
         </div>
+        <div class="stoic-quote" id="stoicQuote"></div>
         <div class="chartDivider"></div>
         <div class="chartTitle">Cumplimiento últimos 7 días</div>
         <div class="barsWeek" id="barsWeek"></div>
@@ -465,7 +476,7 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v10-ciclo-manual';
+const VERSION='v12-barras-vaso';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
@@ -654,6 +665,30 @@ const EMOJI_CATS=[
 ];
 const EMOJIS=EMOJI_CATS.flatMap(c=>c.emojis); // lista plana para retrocompat
 let emojiCatActiva=0;
+// ---- Frases estoicas motivadoras ----
+const FRASES_ESTOICAS=[
+  {t:'No es que tengamos poco tiempo, sino que perdemos mucho.',a:'Séneca'},
+  {t:'La disciplina de hoy es la libertad de mañana.',a:'Epicteto'},
+  {t:'Tienes poder sobre tu mente, no sobre los eventos externos. Date cuenta de esto y hallarás fuerza.',a:'Marco Aurelio'},
+  {t:'Primero dite qué quieres ser; luego haz lo que tengas que hacer.',a:'Epicteto'},
+  {t:'La felicidad de tu vida depende de la calidad de tus pensamientos.',a:'Marco Aurelio'},
+  {t:'No expliques tu filosofía. Encárnala.',a:'Epicteto'},
+  {t:'Ninguna persona es libre si no es dueña de sí misma.',a:'Epicteto'},
+  {t:'Comienza de una vez a vivir, y cuenta cada día como una vida entera.',a:'Séneca'},
+  {t:'El obstáculo es el camino.',a:'Marco Aurelio'},
+  {t:'Sufrimos más en la imaginación que en la realidad.',a:'Séneca'},
+  {t:'Que tus actos hablen más alto que tus palabras.',a:'Estoicismo'},
+  {t:'Lo que haces cada día importa más que lo que haces de vez en cuando.',a:'Estoicismo'},
+  {t:'No esperes a ser mejor para empezar. Empieza para ser mejor.',a:'Estoicismo'},
+  {t:'Domina tus hábitos o ellos te dominarán a ti.',a:'Estoicismo'},
+  {t:'El hombre que puede con todo es el que primero puede consigo mismo.',a:'Séneca'},
+];
+function fraseDelDia(){
+  // Una frase estable por día (cambia cada día)
+  const d=new Date();
+  const seed=d.getFullYear()*1000+ (d.getMonth()+1)*40 + d.getDate();
+  return FRASES_ESTOICAS[seed % FRASES_ESTOICAS.length];
+}
 const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const DIAS=['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
 
@@ -1030,33 +1065,42 @@ function renderHabResumen(){
   document.getElementById('ringWkPct').textContent=pctHoy+'%';
   document.getElementById('ringWkBar').setAttribute('stroke-dasharray',`${pctHoy} ${100-pctHoy}`);
 
-  // ---- BARRAS APILADAS últimos 7 días ----
-  // Mostrar la semana actual (lun→dom). Cada barra = slots por hábito que aplica ese día.
+  // ---- BARRAS últimos 7 días (relleno proporcional a lo cumplido) ----
   const barsHtml = wd.map((dk,i)=>{
     const aplican = habits.map((h,gi)=>({h,gi})).filter(o=>habitAppliesTo(o.h,i));
     const n = aplican.length;
+    const hechos = aplican.filter(o=>o.h.dias && o.h.dias[dk]).length;
     const isToday = dk===tk;
-    let segs;
+    let fill, contador, cls;
     if(n===0){
-      // día de descanso: barra vacía tenue
-      segs = `<div class="barSeg empty" style="height:100%"></div>`;
+      fill = '';
+      contador = '<span class="barCount off">—</span>';
+      cls='rest';
     } else {
-      const h = (100/n);
-      segs = aplican.map(o=>{
-        const hecho = o.h.dias && o.h.dias[dk];
-        const color = o.h.color || colorFor(o.gi);
-        return hecho
-          ? `<div class="barSeg" style="height:calc(${h}% - 2px);background:${color}"></div>`
-          : `<div class="barSeg empty" style="height:calc(${h}% - 2px)"></div>`;
-      }).join('');
+      const pct = Math.round(hechos/n*100);
+      // color según progreso
+      let color;
+      if(hechos===0) color='transparent';
+      else if(hechos===n) color='#10b981';       // completo → verde
+      else if(pct>=60) color='#84cc16';           // buen avance → verde lima
+      else if(pct>=34) color='#f59e0b';           // medio → naranja
+      else color='#f97316';                        // bajo → naranja fuerte
+      fill = `<div class="barFill" style="height:${pct}%;background:${color}"></div>`;
+      // marca de check si completó el día
+      if(hechos===n) fill += `<div class="barDone">✓</div>`;
+      const clsCount = hechos===n?'full':(hechos>0?'partial':'off');
+      contador = `<span class="barCount ${clsCount}">${hechos}/${n}</span>`;
+      cls='';
     }
-    return `<div class="barCol ${isToday?'today':''}" onclick="abrirDia('${dk}',${i})"><div class="barTrack">${segs}</div><div class="barLb">${DIAS[i][0]}</div></div>`;
+    return `<div class="barCol ${isToday?'today':''} ${cls}" onclick="abrirDia('${dk}',${i})"><div class="barTrack">${fill}</div><span class="barLb">${DIAS[i][0]}</span>${contador}</div>`;
   }).join('');
   document.getElementById('barsWeek').innerHTML = barsHtml;
 
-  // ---- LEYENDA ----
+  // ---- LEYENDA (significado del relleno) ----
   document.getElementById('barsLegend').innerHTML = habits.length
-    ? habits.map((h,gi)=>`<div class="legItem"><div class="legDot" style="background:${h.color||colorFor(gi)}"></div>${h.nombre}</div>`).join('')
+    ? `<div class="legItem"><div class="legDot" style="background:#10b981"></div>Completo</div>
+       <div class="legItem"><div class="legDot" style="background:#f59e0b"></div>A medias</div>
+       <div class="legItem"><div class="legDot" style="background:#eef1f5;box-shadow:inset 0 0 0 1px #d5d9e0"></div>Sin marcar</div>`
     : '';
 
   // ---- stats4 (tarjetas de abajo) ----
@@ -1082,6 +1126,19 @@ function renderHabResumen(){
   document.getElementById('hBest').textContent=dTxt(streak.best);
   document.getElementById('hStreakSub').textContent=
     streak.current===0?'Empieza hoy':streak.current<3?'¡Buen comienzo!':streak.current<7?'¡Vas muy bien!':'¡Increíble constancia!';
+
+  // ---- contador llevas/tienes de hoy ----
+  const elCount=document.getElementById('hTodayCount');
+  if(elCount){
+    elCount.textContent = total===0 ? 'Hoy descansas 😌' : `✅ ${doneToday} de ${total} hoy`;
+  }
+
+  // ---- frase estoica del día ----
+  const elQ=document.getElementById('stoicQuote');
+  if(elQ){
+    const f=fraseDelDia();
+    elQ.innerHTML=`"${f.t}"<span class="stoic-author">— ${f.a}</span>`;
+  }
 
   // ---- resumen de metas ----
   renderGoalSummary();
