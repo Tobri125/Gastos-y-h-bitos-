@@ -122,6 +122,13 @@
   .detalle-input{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:14px;font-size:15px;margin-bottom:14px;background:#fff;color:var(--dark);outline:none;transition:.2s;box-sizing:border-box}
   .detalle-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.12)}
   .detalle-input::placeholder{color:#b8c0cc}
+  .ciclo-sel{margin-bottom:14px}
+  .ciclo-sel-lab{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .ciclo-select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;font-size:15px;background:#fff;color:var(--dark);outline:none;box-sizing:border-box}
+  .item-edit{position:relative}
+  .item-edit .item-tx{cursor:pointer}
+  .item-del{background:none;border:none;font-size:16px;cursor:pointer;padding:4px 6px;margin-left:6px;opacity:.5;transition:.15s;flex-shrink:0}
+  .item-del:active{opacity:1}
   .numpad b{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center;cursor:pointer;font-weight:600;font-size:20px;transition:.15s}
   .numpad b:active{background:var(--line)}
   .numpad b.del{background:#fdeded;color:var(--red);border:none}
@@ -213,6 +220,7 @@
   .sheet h3{font-size:16px;font-weight:600;margin-bottom:16px}
   .sheet-in{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px;margin-bottom:12px}
   .sheet-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+  .sheet-btn-del{width:100%;padding:12px;background:none;color:#ef4444;border:1px solid #fdd;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px}
   .emoji-pick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
   .emoji-opt{width:44px;height:44px;border-radius:12px;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:.2s}
   .emoji-opt.on{background:var(--green);transform:scale(1.1)}
@@ -280,9 +288,9 @@
     <div id="v_inicio" class="view on">
       <div class="ciclo-banner" id="cicloBanner"></div>
       <div class="grid2">
-        <div class="stat green" onclick="setScreen('v_registrar')"><div class="stat-top"><span class="stat-lab">Ingresos del ciclo</span><div class="stat-ic">↑</div></div><div class="stat-val" id="sIngresos">$0</div><div class="stat-sub">Total recibido</div></div>
-        <div class="stat red" onclick="setScreen('v_registrar')"><div class="stat-top"><span class="stat-lab">Gastos pagados</span><div class="stat-ic">↓</div></div><div class="stat-val" id="sGastosPagados">$0</div><div class="stat-sub">Ya desembolsados</div></div>
-        <div class="stat blue"><div class="stat-top"><span class="stat-lab">Diferencial</span><div class="stat-ic">💵</div></div><div class="stat-val" id="sDiferencial">$0</div><div class="stat-sub">Ingresos − gastos − ahorro</div></div>
+        <div class="stat green" onclick="nuevoTx('ingreso')"><div class="stat-top"><span class="stat-lab">Ingresos del ciclo</span><div class="stat-ic">↑</div></div><div class="stat-val" id="sIngresos">$0</div><div class="stat-sub">Total recibido</div></div>
+        <div class="stat red" onclick="nuevoTx('gasto')"><div class="stat-top"><span class="stat-lab">Gastos pagados</span><div class="stat-ic">↓</div></div><div class="stat-val" id="sGastosPagados">$0</div><div class="stat-sub">Ya desembolsados</div></div>
+        <div class="stat blue"><div class="stat-top"><span class="stat-lab">Disponible</span><div class="stat-ic">💵</div></div><div class="stat-val" id="sDiferencial">$0</div><div class="stat-sub">Ingresos − gastos − ahorro</div></div>
         <div class="stat orange" onclick="setScreen('v_settings')"><div class="stat-top"><span class="stat-lab">Ahorro acumulado</span><div class="stat-ic">🏦</div></div><div class="stat-val" id="sAhorro">$0</div><div class="stat-sub">Acumulado</div></div>
       </div>
       <div class="card">
@@ -292,8 +300,8 @@
       <div class="card">
         <h2 style="font-size:15px;font-weight:600;margin-bottom:14px">Acciones rápidas</h2>
         <div class="actions">
-          <div class="act" onclick="setTxMode('gasto');setScreen('v_registrar')"><div class="act-ic" style="background:#fdeded">➖</div><div class="act-lab">Nuevo gasto</div></div>
-          <div class="act" onclick="setTxMode('ingreso');setScreen('v_registrar')"><div class="act-ic" style="background:#e8f7f0">➕</div><div class="act-lab">Nuevo ingreso</div></div>
+          <div class="act" onclick="nuevoTx('gasto')"><div class="act-ic" style="background:#fdeded">➖</div><div class="act-lab">Nuevo gasto</div></div>
+          <div class="act" onclick="nuevoTx('ingreso')"><div class="act-ic" style="background:#e8f7f0">➕</div><div class="act-lab">Nuevo ingreso</div></div>
           <div class="act" onclick="setScreen('v_fijos')"><div class="act-ic" style="background:#fdf4e8">📋</div><div class="act-lab">Gastos fijos</div></div>
           <div class="act" onclick="setScreen('v_resumen')"><div class="act-ic" style="background:#f3e8fd">📊</div><div class="act-lab">Resumen</div></div>
         </div>
@@ -319,6 +327,10 @@
       <div class="chips" id="txChips"></div>
       <div class="amount-disp" id="txAmount">$0</div>
       <input id="txDetalle" class="detalle-input" type="text" placeholder="Detalle (ej: pan con café, almuerzo con Caro...)" maxlength="60">
+      <div id="txCicloSel" class="ciclo-sel" style="display:none">
+        <label class="ciclo-sel-lab">¿A qué ciclo pertenece?</label>
+        <select id="txCiclo" class="ciclo-select"></select>
+      </div>
       <div class="numpad">
         <b onclick="addDigit('1')">1</b><b onclick="addDigit('2')">2</b><b onclick="addDigit('3')">3</b>
         <b onclick="addDigit('4')">4</b><b onclick="addDigit('5')">5</b><b onclick="addDigit('6')">6</b>
@@ -370,6 +382,10 @@
         <div class="st o"><div class="st-ic">🔥</div><div class="st-val" id="hMonth">0%</div><div class="st-lab">Promedio mensual</div><div class="st-sub">De cumplimiento</div></div>
       </div>
       <div id="goalSummary"></div>
+      <div class="card">
+        <div class="sec-head"><h2>Hábitos de hoy</h2><a onclick="setScreen('v_habLista')">Ver todos ›</a></div>
+        <div id="habitTodayList"></div>
+      </div>
       <div class="progress-card">
         <div class="prog-ring"><svg viewBox="0 0 36 36" width="50" height="50"><circle cx="18" cy="18" r="15.5" fill="none" stroke="#fff" stroke-width="4"/><circle id="progCircle" cx="18" cy="18" r="15.5" fill="none" stroke="var(--green)" stroke-width="4" stroke-dasharray="0 100" transform="rotate(-90 18 18)" stroke-linecap="round"/></svg><div class="prog-c" id="progPct">0%</div></div>
         <div class="prog-tx"><h3>Tu progreso general</h3><p id="progMsg">¡Comienza hoy! 📈</p></div>
@@ -427,7 +443,7 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v7-ciclos';
+const VERSION='v8-mejoras';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
@@ -496,48 +512,51 @@ let world='fin', txMode='gasto', txAmt='', currentCat='', pickedEmoji='🎯';
 let txs=[], habits=[], fijos=[], goals=[], seeded=false, ahorroAcumulado=0;
 let cicloActivo=null; // ciclo seleccionado en la vista (null = ciclo de hoy)
 
-// ==== SISTEMA DE CICLOS FINANCIEROS (corte día 19, o hábil anterior) ====
-const CUTOFF_DAY=19;
-// Devuelve el día de corte real para un año/mes (si el 19 cae sáb/dom → viernes anterior)
-function cutoffDay(year,month){
-  const d=new Date(year,month,CUTOFF_DAY);
-  const dow=d.getDay(); // 0=dom,6=sáb
-  if(dow===6) return CUTOFF_DAY-1; // sábado → viernes 18
-  if(dow===0) return CUTOFF_DAY-2; // domingo → viernes 17
-  return CUTOFF_DAY;
+// ==== SISTEMA DE CICLOS FINANCIEROS (corte día 19, límites ajustados a día hábil) ====
+// Regla: el sueldo llega ~el 19. El ciclo va del 19 al 18 del mes siguiente.
+// Si el 18 (fin) cae fin de semana, se adelanta al viernes hábil. El inicio del
+// ciclo siguiente es el día después de ese fin → así los ciclos son continuos, sin gaps ni solapes.
+function habilAtras(dateObj){
+  const d=new Date(dateObj);
+  const dow=d.getDay();
+  if(dow===6) d.setDate(d.getDate()-1); // sábado → viernes
+  else if(dow===0) d.setDate(d.getDate()-2); // domingo → viernes
+  return d;
 }
-// Un ciclo se identifica por 'YYYY-MM' de su mes de INICIO. Ej '2026-06' = 19 jun → 18 jul
 function cicloKey(year,month){return year+'-'+String(month+1).padStart(2,'0');}
-// Dado una fecha real, ¿a qué ciclo pertenece?
+// Inicio del ciclo cuyo mes-ancla es (year,month): el día después del cierre del mes anterior.
+// Cierre del mes previo = habilAtras(18 de este mes). Inicio = ese día + 1.
+function inicioCiclo(year,month){
+  const cierrePrev=habilAtras(new Date(year,month,18));
+  const ini=new Date(cierrePrev); ini.setDate(ini.getDate()+1);
+  return ini;
+}
+// Fin del ciclo (year,month) = habilAtras(18 del mes siguiente)
+function finCiclo(year,month){
+  return habilAtras(new Date(year,month+1,18));
+}
+// ¿A qué ciclo pertenece una fecha?
 function cicloDeFecha(dateObj){
-  const y=dateObj.getFullYear(), m=dateObj.getMonth(), day=dateObj.getDate();
-  const corte=cutoffDay(y,m);
-  if(day>=corte) return cicloKey(y,m);           // este mes ya arrancó su ciclo
-  const prev=new Date(y,m-1,1);                   // aún pertenece al ciclo del mes anterior
+  const y=dateObj.getFullYear(), m=dateObj.getMonth();
+  const ini=inicioCiclo(y,m);
+  if(dateObj>=ini) return cicloKey(y,m);
+  const prev=new Date(y,m-1,1);
   return cicloKey(prev.getFullYear(),prev.getMonth());
 }
-// Ciclo de hoy
 function cicloDeHoy(){return cicloDeFecha(new Date());}
-// Rango de fechas {inicio,fin} de un ciclo dado su key
 function rangoCiclo(key){
   const [y,m]=key.split('-').map(Number);
-  const mo=m-1;
-  const ini=new Date(y,mo,cutoffDay(y,mo));
-  const fin=new Date(y,mo+1,cutoffDay(y,mo+1)-1); // día antes del corte del mes siguiente
-  return {inicio:ini,fin:fin};
+  return {inicio:inicioCiclo(y,m-1), fin:finCiclo(y,m-1)};
 }
-// Etiqueta "19 jun - 18 jul"
 function cicloLabel(key){
   const r=rangoCiclo(key);
   return r.inicio.getDate()+' '+MES[r.inicio.getMonth()]+' - '+r.fin.getDate()+' '+MES[r.fin.getMonth()];
 }
-// Lista de todos los ciclos que tienen movimientos, ordenados (más reciente primero)
 function ciclosConDatos(){
   const set=new Set(txs.map(t=>t.ciclo||cicloDeHoy()));
-  set.add(cicloDeHoy()); // siempre incluir el ciclo actual
+  set.add(cicloDeHoy());
   return [...set].sort().reverse();
 }
-// Movimientos de un ciclo
 function txsDeCiclo(key){return txs.filter(t=>(t.ciclo||cicloDeHoy())===key);}
 
 // ---- FIJOS por defecto (tus gastos reales) ----
@@ -566,7 +585,7 @@ const DEFAULT_HABITS=[
   {nombre:'Dormir 23:00',emoji:'🌙',freq:'Todos los días',dias:{},days_selected:['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'],color:HABIT_COLORS[5]},
 ];
 
-const EMOJIS=['🎯','🏃','🧘','📖','💧','🌙','🚫','⏰','💪','🍎','✍️','🎸','💻','🧹','☕','🙏'];
+const EMOJIS=['🎯','🏃','🏋️','🧘','🚴','🏊','⚽','🥋','🤸','💪','🏆','🎽','⏰','🌅','🌙','😴','📖','📚','✍️','💻','🎓','🧠','💡','🎸','🎹','🎨','🎮','📷','🎬','💧','🍎','🥗','🥦','🚫','🍺','🚭','☕','🍳','🧹','🧺','🛁','🦷','💊','🩺','❤️','🧘‍♂️','🙏','😊','📱','💰','📈','🗂️','✅','🎯','🐕','🌱','🎯'];
 const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const DIAS=['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
 
@@ -610,7 +629,7 @@ function renderNav(){
 }
 
 function fabAction(){
-  if(world==='fin'){ setTxMode('gasto'); setScreen('v_registrar'); }
+  if(world==='fin'){ nuevoTx('gasto'); }
   else { openSheet(); }
 }
 
@@ -727,9 +746,15 @@ function renderDonut(){
 function renderMov(){
   const recent=txsDeCiclo(cicloActivo||cicloDeHoy()).slice().reverse().slice(0,6);
   document.getElementById('movList').innerHTML = recent.length ? recent.map(t=>{
+    const realIdx=txs.indexOf(t);
     const catName=t.cat.replace(/^[^\s]+\s/,'');
     const nombre=t.detalle?`${catName} · ${t.detalle}`:catName;
-    return `<div class="item"><div class="item-ic">${t.cat.split(' ')[0]}</div><div class="item-tx"><div class="item-name">${nombre}</div><div class="item-date">${t.fecha}</div></div><div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div></div>`;
+    return `<div class="item item-edit">
+      <div class="item-ic">${t.cat.split(' ')[0]}</div>
+      <div class="item-tx" onclick="editarTx(${realIdx})"><div class="item-name">${nombre}</div><div class="item-date">${t.fecha}</div></div>
+      <div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div>
+      <button class="item-del" onclick="eliminarTx(${realIdx})">🗑️</button>
+    </div>`;
   }).join('') : '<div class="empty"><div class="empty-ic">📊</div><p>Sin movimientos en este ciclo<br>Toca + para registrar</p></div>';
 }
 
@@ -752,26 +777,91 @@ function setTxMode(m){
   document.getElementById('mGasto').className=m==='gasto'?'gasto-on':'off';
   document.getElementById('mIngreso').className=m==='ingreso'?'ingreso-on':'off';
   renderChips();
+  // El selector de ciclo aparece para ingresos (clasificar el sueldo)
+  const sel=document.getElementById('txCicloSel');
+  if(sel){
+    if(m==='ingreso'){ poblarSelectorCiclo(); sel.style.display='block'; }
+    else sel.style.display='none';
+  }
+}
+function poblarSelectorCiclo(){
+  const el=document.getElementById('txCiclo');
+  if(!el)return;
+  // Ofrecer el ciclo actual y el siguiente (por si el sueldo abre uno nuevo), más los con datos
+  const hoy=cicloDeHoy();
+  const [hy,hm]=hoy.split('-').map(Number);
+  const sig=cicloKey(hm===12?hy+1:hy, hm===12?0:hm); // mes siguiente
+  const opciones=[...new Set([sig,hoy,...ciclosConDatos()])];
+  el.innerHTML=opciones.map(k=>`<option value="${k}" ${k===hoy?'selected':''}>${cicloLabel(k)}</option>`).join('');
 }
 function addDigit(d){txAmt=(txAmt+d).slice(0,12);document.getElementById('txAmount').textContent=fmt(parseInt(txAmt||'0'));}
 function delDigit(){txAmt=txAmt.slice(0,-1);document.getElementById('txAmount').textContent=fmt(parseInt(txAmt||'0'));}
+let editandoTx=null; // índice del movimiento en edición (null = nuevo)
+// Iniciar un movimiento NUEVO (limpia edición previa)
+function nuevoTx(modo){
+  editandoTx=null;
+  txAmt='';currentCat='';
+  const disp=document.getElementById('txAmount'); if(disp)disp.textContent='$0';
+  const det=document.getElementById('txDetalle'); if(det)det.value='';
+  setTxMode(modo);
+  setScreen('v_registrar');
+}
 function saveTx(){
   if(!txAmt||parseInt(txAmt)===0){toast('Ingresa un monto');return;}
   if(!currentCat){toast('Selecciona una categoría');return;}
   const now=new Date();
-  const fecha=now.getDate()+' '+MES[now.getMonth()];
   const detalle=document.getElementById('txDetalle').value.trim();
-  const ciclo=cicloDeFecha(now);
-  const iso=now.toISOString().slice(0,10);
-  txs.push({tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha,detalle,ciclo,iso});
-  // si el movimiento cae en un ciclo distinto al que se ve, saltar a ese ciclo
-  cicloActivo=ciclo;
-  persist();
+  if(editandoTx!==null){
+    // Editar movimiento existente (mantiene su fecha y ciclo)
+    const t=txs[editandoTx];
+    t.tipo=txMode; t.monto=parseInt(txAmt); t.cat=currentCat; t.detalle=detalle;
+    if(txMode==='ingreso'){ const c=document.getElementById('txCiclo').value; if(c){t.ciclo=c;} }
+    cicloActivo=t.ciclo||cicloDeHoy();
+    editandoTx=null;
+    persist();
+    toast('Movimiento actualizado ✓');
+  } else {
+    const fecha=now.getDate()+' '+MES[now.getMonth()];
+    let ciclo=cicloDeFecha(now);
+    // Para ingresos, respetar el ciclo elegido en el selector
+    if(txMode==='ingreso'){ const c=document.getElementById('txCiclo').value; if(c)ciclo=c; }
+    const iso=now.toISOString().slice(0,10);
+    txs.push({tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha,detalle,ciclo,iso});
+    cicloActivo=ciclo;
+    persist();
+    toast('Movimiento guardado ✓');
+  }
   txAmt='';currentCat='';
   document.getElementById('txAmount').textContent='$0';
   document.getElementById('txDetalle').value='';
-  toast('Movimiento guardado ✓');
   setScreen('v_inicio');
+}
+// Abrir un movimiento para editar
+function editarTx(idx){
+  const t=txs[idx];
+  editandoTx=idx;
+  txAmt=String(t.monto);
+  setTxMode(t.tipo);
+  currentCat=t.cat;
+  renderChips();
+  document.getElementById('txAmount').textContent=fmt(t.monto);
+  document.getElementById('txDetalle').value=t.detalle||'';
+  if(t.tipo==='ingreso'){
+    poblarSelectorCiclo();
+    const sel=document.getElementById('txCiclo');
+    if(sel && t.ciclo){[...sel.options].forEach(o=>{if(o.value===t.ciclo)o.selected=true;});}
+    document.getElementById('txCicloSel').style.display='block';
+  }
+  setScreen('v_registrar');
+}
+// Eliminar un movimiento
+function eliminarTx(idx){
+  if(!confirm('¿Eliminar este movimiento?'))return;
+  txs.splice(idx,1);
+  persist();
+  toast('Movimiento eliminado');
+  renderHist();
+  renderInicio();
 }
 
 function renderHist(){
@@ -787,9 +877,15 @@ function renderHist(){
     const gas=items.filter(t=>t.tipo==='gasto').reduce((a,t)=>a+t.monto,0);
     const esActual=key===cicloDeHoy();
     const filas=items.map(t=>{
+      const realIdx=txs.indexOf(t); // índice real en el array txs
       const catName=t.cat.replace(/^[^\s]+\s/,'');
       const nombre=t.detalle?`${catName} · ${t.detalle}`:catName;
-      return `<div class="item"><div class="item-ic">${t.cat.split(' ')[0]}</div><div class="item-tx"><div class="item-name">${nombre}</div><div class="item-date">${t.fecha}</div></div><div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div></div>`;
+      return `<div class="item item-edit">
+        <div class="item-ic">${t.cat.split(' ')[0]}</div>
+        <div class="item-tx" onclick="editarTx(${realIdx})"><div class="item-name">${nombre}</div><div class="item-date">${t.fecha}</div></div>
+        <div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div>
+        <button class="item-del" onclick="eliminarTx(${realIdx})">🗑️</button>
+      </div>`;
     }).join('');
     return `<div class="ciclo-group">
       <div class="ciclo-header">
@@ -810,7 +906,7 @@ function renderResumen(){
     <div class="item"><div class="item-tx"><div class="item-name">Total ingresos</div></div><div class="item-amt in">${fmt(t.ing)}</div></div>
     <div class="item"><div class="item-tx"><div class="item-name">Gastos diarios registrados</div></div><div class="item-amt out">${fmt(gas_diarios)}</div></div>
     <div class="item"><div class="item-tx"><div class="item-name">Gastos fijos pagados</div></div><div class="item-amt out">${fmt(t.gasPagados)}</div></div>
-    <div class="item"><div class="item-tx"><div class="item-name" style="font-weight:700">Diferencial</div></div><div class="item-amt" style="color:var(--blue)">${fmt(t.dif)}</div></div>
+    <div class="item"><div class="item-tx"><div class="item-name" style="font-weight:700">Disponible</div></div><div class="item-amt" style="color:var(--blue)">${fmt(t.dif)}</div></div>
     <div class="item"><div class="item-tx"><div class="item-name">Ahorro acumulado</div></div><div class="item-amt" style="color:var(--green)">${fmt(ahorroAcumulado)}</div></div>
     <div class="item"><div class="item-tx"><div class="item-name">Movimientos del ciclo</div></div><div class="item-amt" style="color:var(--dark)}">${nMovs}</div></div>
   `;
@@ -899,6 +995,8 @@ function renderHabResumen(){
 
   // ---- resumen de metas ----
   renderGoalSummary();
+  // ---- hábitos de hoy marcables ----
+  const htl=document.getElementById('habitTodayList'); if(htl)htl.innerHTML=htmlHabitosHoy();
 }
 
 function renderGoalSummary(){
@@ -949,31 +1047,37 @@ function calcStreak(){
   return {current,best};
 }
 
-function renderHabList(){
+// Render de la lista de hábitos de hoy (reutilizable en resumen y en lista)
+function htmlHabitosHoy(){
   const tk=todayKey();
-  // Obtener día actual (LUN=0, MAR=1, ..., DOM=6)
-  const dayIdx = (new Date().getDay() + 6) % 7;
-  const todayName = DIAS[dayIdx];
-  
-  // Filtrar hábitos que incluyan el día de hoy
-  const habitsToday = habits.filter(h => {
-    if(!h.days_selected) return true; // retrocompatibilidad
+  const dayIdx=(new Date().getDay()+6)%7;
+  const todayName=DIAS[dayIdx];
+  const habitsToday=habits.filter(h=>{
+    if(!h.days_selected)return true;
     return h.days_selected.includes(todayName);
   });
-  
-  document.getElementById('habitList').innerHTML = habitsToday.length ? habitsToday.map((h, i) => {
-    const origIdx = habits.indexOf(h);
-    const done = h.dias && h.dias[tk];
-    const col = h.color || colorFor(origIdx);
-    return `<div class="habit"><div class="habit-ic" style="background:${done?col:'#f1f5f9'};box-shadow:inset 3px 0 0 ${col}">${h.emoji}</div><div class="habit-tx"><div class="habit-name">${h.nombre}</div><div class="habit-freq">${h.freq}</div></div><div class="habit-check ${done?'done':'pending'}" style="${done?'background:'+col+';border-color:'+col:''}" onclick="toggleHabit(${origIdx})">${done?'✓':''}</div></div>`;
-  }).join('') : '<div class="empty"><div class="empty-ic">🎯</div><p>Sin hábitos para hoy<br>Todos programados para otros días</p></div>';
+  if(!habitsToday.length) return '<div class="empty"><div class="empty-ic">🎯</div><p>Sin hábitos para hoy<br>Todos programados para otros días</p></div>';
+  return habitsToday.map(h=>{
+    const origIdx=habits.indexOf(h);
+    const done=h.dias&&h.dias[tk];
+    const col=h.color||colorFor(origIdx);
+    return `<div class="habit"><div class="habit-ic" style="background:${done?col:'#f1f5f9'};box-shadow:inset 3px 0 0 ${col}">${h.emoji}</div><div class="habit-tx" onclick="openSheetEdit(${origIdx})"><div class="habit-name">${h.nombre}</div><div class="habit-freq">${h.freq} · ✎ editar</div></div><div class="habit-check ${done?'done':'pending'}" style="${done?'background:'+col+';border-color:'+col:''}" onclick="toggleHabit(${origIdx})">${done?'✓':''}</div></div>`;
+  }).join('');
+}
+
+function renderHabList(){
+  document.getElementById('habitList').innerHTML=htmlHabitosHoy();
 }
 
 function toggleHabit(i){
   const tk=todayKey();
   if(!habits[i].dias)habits[i].dias={};
   habits[i].dias[tk]=!habits[i].dias[tk];
-  persist();renderHabList();
+  persist();
+  // Actualizar TODAS las vistas de hábitos que estén visibles
+  const l1=document.getElementById('habitList'); if(l1)l1.innerHTML=htmlHabitosHoy();
+  const l2=document.getElementById('habitTodayList'); if(l2)l2.innerHTML=htmlHabitosHoy();
+  renderHabResumen(); // actualiza anillo, barras, stats, racha
   toast(habits[i].dias[tk]?'¡Bien hecho! ✓':'Desmarcado');
 }
 
@@ -997,24 +1101,51 @@ function renderHabStats(){
 
 // ---- BOTTOM SHEET (nuevo hábito) ----
 let selectedDays={LUN:true,MAR:true,MIÉ:true,JUE:true,VIE:true,SÁB:false,DOM:false};
+let editandoHabit=null; // índice del hábito en edición (null = nuevo)
 function openSheet(){
+  editandoHabit=null;
   pickedEmoji='🎯';
   selectedDays={LUN:true,MAR:true,MIÉ:true,JUE:true,VIE:true,SÁB:false,DOM:false};
   document.getElementById('sheetTitle').textContent='Nuevo hábito';
-  const dayBtns=Object.keys(selectedDays).map(d=>`<b class="daybtn ${selectedDays[d]?'on':''}" data-day="${d}" onclick="toggleDay('${d}')">${d}</b>`).join('');
-  document.getElementById('sheetBody').innerHTML=`
-    <div class="emoji-pick" id="emojiPick"></div>
-    <input class="sheet-in" id="habitName" placeholder="Nombre del hábito (ej: Meditar)">
-    <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:8px">¿Qué días?</label>
-    <div class="daygrid">${dayBtns}</div>
-    <button class="sheet-btn" onclick="createHabit()">Crear hábito</button>
-  `;
-  document.getElementById('emojiPick').innerHTML=EMOJIS.map(e=>`<div class="emoji-opt ${e===pickedEmoji?'on':''}" onclick="pickEmoji('${e}',this)">${e}</div>`).join('');
+  renderSheetBody('Crear hábito');
   document.getElementById('sheetBg').classList.add('on');
   document.getElementById('sheet').classList.add('on');
 }
+function openSheetEdit(idx){
+  editandoHabit=idx;
+  const h=habits[idx];
+  pickedEmoji=h.emoji||'🎯';
+  const dias=h.days_selected||['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
+  selectedDays={LUN:false,MAR:false,MIÉ:false,JUE:false,VIE:false,SÁB:false,DOM:false};
+  dias.forEach(d=>selectedDays[d]=true);
+  document.getElementById('sheetTitle').textContent='Editar hábito';
+  renderSheetBody('Guardar cambios', h.nombre);
+  document.getElementById('sheetBg').classList.add('on');
+  document.getElementById('sheet').classList.add('on');
+}
+function renderSheetBody(btnText, nombreVal){
+  const dayBtns=Object.keys(selectedDays).map(d=>`<b class="daybtn ${selectedDays[d]?'on':''}" data-day="${d}" onclick="toggleDay('${d}')">${d}</b>`).join('');
+  const delBtn=editandoHabit!==null?`<button class="sheet-btn-del" onclick="eliminarHabit(${editandoHabit})">🗑️ Eliminar hábito</button>`:'';
+  document.getElementById('sheetBody').innerHTML=`
+    <div class="emoji-pick" id="emojiPick"></div>
+    <input class="sheet-in" id="habitName" placeholder="Nombre del hábito (ej: Meditar)" value="${nombreVal?nombreVal.replace(/"/g,'&quot;'):''}">
+    <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:8px">¿Qué días?</label>
+    <div class="daygrid">${dayBtns}</div>
+    <button class="sheet-btn" onclick="createHabit()">${btnText}</button>
+    ${delBtn}
+  `;
+  document.getElementById('emojiPick').innerHTML=EMOJIS.map(e=>`<div class="emoji-opt ${e===pickedEmoji?'on':''}" onclick="pickEmoji('${e}',this)">${e}</div>`).join('');
+}
+function eliminarHabit(idx){
+  if(!confirm('¿Eliminar este hábito? Se perderá su historial.'))return;
+  habits.splice(idx,1);
+  editandoHabit=null;
+  persist();closeSheet();
+  setScreen('v_habResumen');
+  toast('Hábito eliminado');
+}
 function toggleDay(d){selectedDays[d]=!selectedDays[d];document.querySelector(`[data-day="${d}"]`).classList.toggle('on');}
-function closeSheet(){document.getElementById('sheetBg').classList.remove('on');document.getElementById('sheet').classList.remove('on');}
+function closeSheet(){document.getElementById('sheetBg').classList.remove('on');document.getElementById('sheet').classList.remove('on');editandoHabit=null;}
 function pickEmoji(e,el){pickedEmoji=e;document.querySelectorAll('#emojiPick .emoji-opt').forEach(o=>o.classList.remove('on'));el.classList.add('on');}
 function createHabit(){
   const name=document.getElementById('habitName').value.trim();
@@ -1022,10 +1153,19 @@ function createHabit(){
   const dias_activos=Object.keys(selectedDays).filter(d=>selectedDays[d]);
   if(!dias_activos.length){toast('Selecciona al menos un día');return;}
   const freq_txt=dias_activos.length===7?'Todos los días':dias_activos.join(', ');
-  habits.push({nombre:name,emoji:pickedEmoji,freq:freq_txt,dias:{},days_selected:dias_activos,color:colorFor(habits.length)});
-  persist();closeSheet();
-  setScreen('v_habLista');
-  toast('Hábito creado ✓');
+  if(editandoHabit!==null){
+    const h=habits[editandoHabit];
+    h.nombre=name; h.emoji=pickedEmoji; h.freq=freq_txt; h.days_selected=dias_activos;
+    editandoHabit=null;
+    persist();closeSheet();
+    setScreen('v_habLista');
+    toast('Hábito actualizado ✓');
+  } else {
+    habits.push({nombre:name,emoji:pickedEmoji,freq:freq_txt,dias:{},days_selected:dias_activos,color:colorFor(habits.length)});
+    persist();closeSheet();
+    setScreen('v_habLista');
+    toast('Hábito creado ✓');
+  }
 }
 
 // ================= METAS / COUNTDOWN =================
