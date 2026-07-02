@@ -107,6 +107,18 @@
   .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
   .amount-disp{font-size:40px;font-weight:700;text-align:center;color:var(--dark);margin:20px 0}
   .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .ciclo-banner{display:flex;align-items:center;gap:10px;background:#1e2a3a;border-radius:16px;padding:12px 14px;margin-bottom:14px;color:#fff}
+  .ciclo-nav{background:rgba(255,255,255,.12);border:none;color:#fff;width:34px;height:34px;border-radius:10px;font-size:20px;cursor:pointer;flex-shrink:0;transition:.15s;display:flex;align-items:center;justify-content:center}
+  .ciclo-nav:active{background:rgba(255,255,255,.25)}
+  .ciclo-nav:disabled{opacity:.25;cursor:default}
+  .ciclo-info{flex:1;text-align:center;cursor:pointer}
+  .ciclo-rango{font-size:16px;font-weight:700}
+  .ciclo-tag{font-size:11px;color:#94a3b8;margin-top:2px}
+  .ciclo-group{margin-bottom:18px}
+  .ciclo-header{padding:10px 0 8px;border-bottom:2px solid var(--line);margin-bottom:6px}
+  .ciclo-h-rango{font-size:14px;font-weight:700;color:var(--dark)}
+  .ciclo-h-sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .ciclo-actual-badge{background:#e8f7f0;color:#10b981;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;vertical-align:middle;margin-left:6px}
   .detalle-input{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:14px;font-size:15px;margin-bottom:14px;background:#fff;color:var(--dark);outline:none;transition:.2s;box-sizing:border-box}
   .detalle-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.12)}
   .detalle-input::placeholder{color:#b8c0cc}
@@ -266,9 +278,9 @@
   <div class="screen">
     <!-- ===== FINANZAS: INICIO ===== -->
     <div id="v_inicio" class="view on">
-      <div class="sec-head"><h2>Resumen de junio 2026</h2><a onclick="setScreen('v_resumen')">Ver detalle ›</a></div>
+      <div class="ciclo-banner" id="cicloBanner"></div>
       <div class="grid2">
-        <div class="stat green" onclick="setScreen('v_registrar')"><div class="stat-top"><span class="stat-lab">Ingresos del mes</span><div class="stat-ic">↑</div></div><div class="stat-val" id="sIngresos">$0</div><div class="stat-sub">Total recibido</div></div>
+        <div class="stat green" onclick="setScreen('v_registrar')"><div class="stat-top"><span class="stat-lab">Ingresos del ciclo</span><div class="stat-ic">↑</div></div><div class="stat-val" id="sIngresos">$0</div><div class="stat-sub">Total recibido</div></div>
         <div class="stat red" onclick="setScreen('v_registrar')"><div class="stat-top"><span class="stat-lab">Gastos pagados</span><div class="stat-ic">↓</div></div><div class="stat-val" id="sGastosPagados">$0</div><div class="stat-sub">Ya desembolsados</div></div>
         <div class="stat blue"><div class="stat-top"><span class="stat-lab">Diferencial</span><div class="stat-ic">💵</div></div><div class="stat-val" id="sDiferencial">$0</div><div class="stat-sub">Ingresos − gastos − ahorro</div></div>
         <div class="stat orange" onclick="setScreen('v_settings')"><div class="stat-top"><span class="stat-lab">Ahorro acumulado</span><div class="stat-ic">🏦</div></div><div class="stat-val" id="sAhorro">$0</div><div class="stat-sub">Acumulado</div></div>
@@ -415,39 +427,41 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v6-detalle';
+const VERSION='v7-ciclos';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
-  {tipo:'ingreso',monto:1753108,cat:'💼 Sueldo',fecha:'1 jun',detalle:'Sueldo mensual'},
-  {tipo:'ingreso',monto:900000,cat:'💰 Ingreso adicional',fecha:'15 jun',detalle:'Ingreso extra'},
-  {tipo:'gasto',monto:16508,cat:'🚌 Transporte',fecha:'21 jun',detalle:'Autopista Costanera'},
-  {tipo:'gasto',monto:41590,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Norte'},
-  {tipo:'gasto',monto:23979,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Ruta 78/Ruta 66/Ruta68'},
-  {tipo:'gasto',monto:6108,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Sur'},
-  {tipo:'gasto',monto:1741,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Oriente (AVO1)'},
-  {tipo:'gasto',monto:23922,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Central/Autopase'},
-  {tipo:'gasto',monto:300000,cat:'💳 Deuda',fecha:'22 jun',detalle:'Prestamo Caro'},
-  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'22 jun',detalle:'Kine'},
-  {tipo:'gasto',monto:40000,cat:'⛽ Bencina',fecha:'22 jun',detalle:'becina'},
-  {tipo:'gasto',monto:41800,cat:'🎮 Entretención',fecha:'22 jun',detalle:'comic'},
-  {tipo:'gasto',monto:30000,cat:'✦ Varios',fecha:'22 jun',detalle:'perfume'},
-  {tipo:'gasto',monto:3890,cat:'🍽️ Comida',fecha:'23 jun',detalle:'desayuno'},
-  {tipo:'gasto',monto:6665,cat:'🍽️ Comida',fecha:'23 jun',detalle:'gotitas te y galletas'},
-  {tipo:'gasto',monto:1700,cat:'🍽️ Comida',fecha:'24 jun',detalle:'Pan desayuno'},
-  {tipo:'gasto',monto:29730,cat:'🏠 Hogar',fecha:'24 jun',detalle:'Movistar'},
-  {tipo:'gasto',monto:29730,cat:'🏠 Hogar',fecha:'24 jun',detalle:'telefono Xime movistar'},
-  {tipo:'gasto',monto:1200,cat:'🍽️ Comida',fecha:'24 jun',detalle:'mani'},
-  {tipo:'gasto',monto:5000,cat:'🚌 Transporte',fecha:'24 jun',detalle:'metro'},
-  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'24 jun',detalle:'terapia rodilla'},
-  {tipo:'gasto',monto:10000,cat:'✦ Varios',fecha:'24 jun',detalle:'tiotito'},
-  {tipo:'gasto',monto:65000,cat:'🩺 Salud',fecha:'25 jun',detalle:'test de lactato'},
-  {tipo:'gasto',monto:2692,cat:'🍽️ Comida',fecha:'25 jun',detalle:'pan mañanero'},
-  {tipo:'gasto',monto:2948,cat:'🍽️ Comida',fecha:'26 jun',detalle:'pan mañanero'},
-  {tipo:'gasto',monto:50000,cat:'⛽ Bencina',fecha:'27 jun',detalle:'bencina'},
-  {tipo:'gasto',monto:28600,cat:'🍽️ Comida',fecha:'27 jun',detalle:'almuerzo'},
-  {tipo:'gasto',monto:1200,cat:'🍽️ Comida',fecha:'26 jun',detalle:'vienesa'},
-  {tipo:'gasto',monto:2928,cat:'🍽️ Comida',fecha:'30 jun',detalle:'pan mañanero'}
+  {tipo:'ingreso',monto:1753108,cat:'💼 Sueldo',fecha:'19 jun',detalle:'Sueldo mensual',ciclo:'2026-06'},
+  {tipo:'ingreso',monto:900000,cat:'💰 Ingreso adicional',fecha:'19 jun',detalle:'Ingreso extra',ciclo:'2026-06'},
+  {tipo:'gasto',monto:16508,cat:'🚌 Transporte',fecha:'21 jun',detalle:'Autopista Costanera',ciclo:'2026-06'},
+  {tipo:'gasto',monto:41590,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Norte',ciclo:'2026-06'},
+  {tipo:'gasto',monto:23979,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Ruta 78/Ruta 66/Ruta68',ciclo:'2026-06'},
+  {tipo:'gasto',monto:6108,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Sur',ciclo:'2026-06'},
+  {tipo:'gasto',monto:1741,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Oriente (AVO1)',ciclo:'2026-06'},
+  {tipo:'gasto',monto:23922,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Central/Autopase',ciclo:'2026-06'},
+  {tipo:'gasto',monto:300000,cat:'💳 Deuda',fecha:'22 jun',detalle:'Prestamo Caro',ciclo:'2026-06'},
+  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'22 jun',detalle:'Kine',ciclo:'2026-06'},
+  {tipo:'gasto',monto:40000,cat:'⛽ Bencina',fecha:'22 jun',detalle:'becina',ciclo:'2026-06'},
+  {tipo:'gasto',monto:41800,cat:'🎮 Entretención',fecha:'22 jun',detalle:'comic',ciclo:'2026-06'},
+  {tipo:'gasto',monto:30000,cat:'✦ Varios',fecha:'22 jun',detalle:'perfume',ciclo:'2026-06'},
+  {tipo:'gasto',monto:3890,cat:'🍽️ Comida',fecha:'23 jun',detalle:'desayuno',ciclo:'2026-06'},
+  {tipo:'gasto',monto:6665,cat:'🍽️ Comida',fecha:'23 jun',detalle:'gotitas te y galletas',ciclo:'2026-06'},
+  {tipo:'gasto',monto:1700,cat:'🍽️ Comida',fecha:'24 jun',detalle:'Pan desayuno',ciclo:'2026-06'},
+  {tipo:'gasto',monto:29730,cat:'🏠 Hogar',fecha:'24 jun',detalle:'Movistar',ciclo:'2026-06'},
+  {tipo:'gasto',monto:29730,cat:'🏠 Hogar',fecha:'24 jun',detalle:'telefono Xime movistar',ciclo:'2026-06'},
+  {tipo:'gasto',monto:1200,cat:'🍽️ Comida',fecha:'24 jun',detalle:'mani',ciclo:'2026-06'},
+  {tipo:'gasto',monto:5000,cat:'🚌 Transporte',fecha:'24 jun',detalle:'metro',ciclo:'2026-06'},
+  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'24 jun',detalle:'terapia rodilla',ciclo:'2026-06'},
+  {tipo:'gasto',monto:10000,cat:'✦ Varios',fecha:'24 jun',detalle:'tiotito',ciclo:'2026-06'},
+  {tipo:'gasto',monto:65000,cat:'🩺 Salud',fecha:'25 jun',detalle:'test de lactato',ciclo:'2026-06'},
+  {tipo:'gasto',monto:2692,cat:'🍽️ Comida',fecha:'25 jun',detalle:'pan mañanero',ciclo:'2026-06'},
+  {tipo:'gasto',monto:2948,cat:'🍽️ Comida',fecha:'26 jun',detalle:'pan mañanero',ciclo:'2026-06'},
+  {tipo:'gasto',monto:50000,cat:'⛽ Bencina',fecha:'27 jun',detalle:'bencina',ciclo:'2026-06'},
+  {tipo:'gasto',monto:28600,cat:'🍽️ Comida',fecha:'27 jun',detalle:'almuerzo',ciclo:'2026-06'},
+  {tipo:'gasto',monto:1200,cat:'🍽️ Comida',fecha:'26 jun',detalle:'vienesa',ciclo:'2026-06'},
+  {tipo:'gasto',monto:2928,cat:'🍽️ Comida',fecha:'30 jun',detalle:'pan mañanero',ciclo:'2026-06'},
+  {tipo:'gasto',monto:12388,cat:'🍽️ Comida',fecha:'1 jul',detalle:'pan mañanero y Café',ciclo:'2026-06'},
+  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'1 jul',detalle:'Kine',ciclo:'2026-06'}
 ];
 const SEED_FIJOS=[
   {nombre:'Auto (cuota crédito)',emoji:'🚗',monto:830000,pagado:true},
@@ -480,6 +494,51 @@ const SEED_AHORRO=106000;
 })();
 let world='fin', txMode='gasto', txAmt='', currentCat='', pickedEmoji='🎯';
 let txs=[], habits=[], fijos=[], goals=[], seeded=false, ahorroAcumulado=0;
+let cicloActivo=null; // ciclo seleccionado en la vista (null = ciclo de hoy)
+
+// ==== SISTEMA DE CICLOS FINANCIEROS (corte día 19, o hábil anterior) ====
+const CUTOFF_DAY=19;
+// Devuelve el día de corte real para un año/mes (si el 19 cae sáb/dom → viernes anterior)
+function cutoffDay(year,month){
+  const d=new Date(year,month,CUTOFF_DAY);
+  const dow=d.getDay(); // 0=dom,6=sáb
+  if(dow===6) return CUTOFF_DAY-1; // sábado → viernes 18
+  if(dow===0) return CUTOFF_DAY-2; // domingo → viernes 17
+  return CUTOFF_DAY;
+}
+// Un ciclo se identifica por 'YYYY-MM' de su mes de INICIO. Ej '2026-06' = 19 jun → 18 jul
+function cicloKey(year,month){return year+'-'+String(month+1).padStart(2,'0');}
+// Dado una fecha real, ¿a qué ciclo pertenece?
+function cicloDeFecha(dateObj){
+  const y=dateObj.getFullYear(), m=dateObj.getMonth(), day=dateObj.getDate();
+  const corte=cutoffDay(y,m);
+  if(day>=corte) return cicloKey(y,m);           // este mes ya arrancó su ciclo
+  const prev=new Date(y,m-1,1);                   // aún pertenece al ciclo del mes anterior
+  return cicloKey(prev.getFullYear(),prev.getMonth());
+}
+// Ciclo de hoy
+function cicloDeHoy(){return cicloDeFecha(new Date());}
+// Rango de fechas {inicio,fin} de un ciclo dado su key
+function rangoCiclo(key){
+  const [y,m]=key.split('-').map(Number);
+  const mo=m-1;
+  const ini=new Date(y,mo,cutoffDay(y,mo));
+  const fin=new Date(y,mo+1,cutoffDay(y,mo+1)-1); // día antes del corte del mes siguiente
+  return {inicio:ini,fin:fin};
+}
+// Etiqueta "19 jun - 18 jul"
+function cicloLabel(key){
+  const r=rangoCiclo(key);
+  return r.inicio.getDate()+' '+MES[r.inicio.getMonth()]+' - '+r.fin.getDate()+' '+MES[r.fin.getMonth()];
+}
+// Lista de todos los ciclos que tienen movimientos, ordenados (más reciente primero)
+function ciclosConDatos(){
+  const set=new Set(txs.map(t=>t.ciclo||cicloDeHoy()));
+  set.add(cicloDeHoy()); // siempre incluir el ciclo actual
+  return [...set].sort().reverse();
+}
+// Movimientos de un ciclo
+function txsDeCiclo(key){return txs.filter(t=>(t.ciclo||cicloDeHoy())===key);}
 
 // ---- FIJOS por defecto (tus gastos reales) ----
 const DEFAULT_FIJOS=[
@@ -521,6 +580,7 @@ function init(){
   fijos = s.fijos || [];
   goals = s.goals || [];
   ahorroAcumulado = s.ahorroAcumulado || 0;
+  cicloActivo = cicloDeHoy();
 }
 
 // ---- NAV CONFIG ----
@@ -590,29 +650,56 @@ function toast(msg){const t=document.createElement('div');t.className='toast';t.
 
 // ================= FINANZAS =================
 function totals(){
-  const ing=txs.filter(t=>t.tipo==='ingreso').reduce((a,t)=>a+t.monto,0);
-  const gas=txs.filter(t=>t.tipo==='gasto').reduce((a,t)=>a+t.monto,0);
+  const tc=txsDeCiclo(cicloActivo||cicloDeHoy()); // solo movimientos del ciclo activo
+  const ing=tc.filter(t=>t.tipo==='ingreso').reduce((a,t)=>a+t.monto,0);
+  const gas=tc.filter(t=>t.tipo==='gasto').reduce((a,t)=>a+t.monto,0);
   const gasPagados=fijos.filter(f=>f.pagado).reduce((a,f)=>a+f.monto,0);
   const gasTotal=gas+gasPagados;
   // Diferencial = ingresos − gastos pagados − ahorro (igual que la planilla)
   const dif=ing-gasTotal-ahorroAcumulado;
-  return {ing,gasPagados,gasTotal,dif};
+  return {ing,gas,gasPagados,gasTotal,dif};
 }
 function fmt(n){return '$'+n.toLocaleString('es-CL');}
 
 function renderInicio(){
   const t=totals();
   document.getElementById('sIngresos').textContent=fmt(t.ing);
-  document.getElementById('sGastosPagados').textContent=fmt(t.gasPagados + txs.filter(x=>x.tipo==='gasto').reduce((a,x)=>a+x.monto,0));
+  document.getElementById('sGastosPagados').textContent=fmt(t.gasTotal);
   document.getElementById('sDiferencial').textContent=fmt(t.dif);
   document.getElementById('sAhorro').textContent=fmt(ahorroAcumulado);
+  renderCicloBanner();
   renderDonut();
   renderMov();
 }
 
+// Banner del ciclo activo con navegación
+function renderCicloBanner(){
+  const el=document.getElementById('cicloBanner');
+  if(!el)return;
+  const ciclos=ciclosConDatos();
+  const idx=ciclos.indexOf(cicloActivo);
+  const esActual=cicloActivo===cicloDeHoy();
+  const hayAnterior=idx<ciclos.length-1;
+  const haySiguiente=idx>0;
+  el.innerHTML=`
+    <button class="ciclo-nav" ${hayAnterior?'':'disabled'} onclick="cambiarCiclo(1)">‹</button>
+    <div class="ciclo-info" onclick="volverCicloActual()">
+      <div class="ciclo-rango">${cicloLabel(cicloActivo)}</div>
+      <div class="ciclo-tag">${esActual?'Ciclo actual':'Ciclo anterior · toca para volver'}</div>
+    </div>
+    <button class="ciclo-nav" ${haySiguiente?'':'disabled'} onclick="cambiarCiclo(-1)">›</button>`;
+}
+function cambiarCiclo(dir){
+  const ciclos=ciclosConDatos();
+  const idx=ciclos.indexOf(cicloActivo);
+  const nuevo=idx+dir;
+  if(nuevo>=0 && nuevo<ciclos.length){cicloActivo=ciclos[nuevo];renderInicio();}
+}
+function volverCicloActual(){cicloActivo=cicloDeHoy();renderInicio();}
+
 function catTotals(){
   const map={};
-  txs.filter(t=>t.tipo==='gasto').forEach(t=>{
+  txsDeCiclo(cicloActivo||cicloDeHoy()).filter(t=>t.tipo==='gasto').forEach(t=>{
     const name=t.cat.replace(/^[^\s]+\s/,'');
     map[name]=(map[name]||0)+t.monto;
   });
@@ -638,12 +725,12 @@ function renderDonut(){
 }
 
 function renderMov(){
-  const recent=txs.slice().reverse().slice(0,6);
+  const recent=txsDeCiclo(cicloActivo||cicloDeHoy()).slice().reverse().slice(0,6);
   document.getElementById('movList').innerHTML = recent.length ? recent.map(t=>{
     const catName=t.cat.replace(/^[^\s]+\s/,'');
     const nombre=t.detalle?`${catName} · ${t.detalle}`:catName;
     return `<div class="item"><div class="item-ic">${t.cat.split(' ')[0]}</div><div class="item-tx"><div class="item-name">${nombre}</div><div class="item-date">${t.fecha}</div></div><div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div></div>`;
-  }).join('') : '<div class="empty"><div class="empty-ic">📊</div><p>Sin movimientos aún<br>Toca + para registrar</p></div>';
+  }).join('') : '<div class="empty"><div class="empty-ic">📊</div><p>Sin movimientos en este ciclo<br>Toca + para registrar</p></div>';
 }
 
 function renderFijos(){
@@ -674,7 +761,11 @@ function saveTx(){
   const now=new Date();
   const fecha=now.getDate()+' '+MES[now.getMonth()];
   const detalle=document.getElementById('txDetalle').value.trim();
-  txs.push({tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha,detalle});
+  const ciclo=cicloDeFecha(now);
+  const iso=now.toISOString().slice(0,10);
+  txs.push({tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha,detalle,ciclo,iso});
+  // si el movimiento cae en un ciclo distinto al que se ve, saltar a ese ciclo
+  cicloActivo=ciclo;
   persist();
   txAmt='';currentCat='';
   document.getElementById('txAmount').textContent='$0';
@@ -684,32 +775,44 @@ function saveTx(){
 }
 
 function renderHist(){
-  const byMonth={};
-  txs.slice().reverse().forEach(t=>{
-    const m=t.fecha.split(' ')[1]||'jun';
-    (byMonth[m]=byMonth[m]||[]).push(t);
-  });
-  const html=Object.entries(byMonth).map(([m,items])=>`
-    <div style="margin-bottom:8px"><div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;padding:8px 0">${m} 2026</div>
-    ${items.map(t=>{
+  const ciclos=ciclosConDatos();
+  const conMovs=ciclos.filter(k=>txsDeCiclo(k).length>0);
+  if(!conMovs.length){
+    document.getElementById('histList').innerHTML='<div class="empty"><div class="empty-ic">📜</div><p>Sin historial aún</p></div>';
+    return;
+  }
+  const html=conMovs.map(key=>{
+    const items=txsDeCiclo(key).slice().reverse();
+    const ing=items.filter(t=>t.tipo==='ingreso').reduce((a,t)=>a+t.monto,0);
+    const gas=items.filter(t=>t.tipo==='gasto').reduce((a,t)=>a+t.monto,0);
+    const esActual=key===cicloDeHoy();
+    const filas=items.map(t=>{
       const catName=t.cat.replace(/^[^\s]+\s/,'');
       const nombre=t.detalle?`${catName} · ${t.detalle}`:catName;
       return `<div class="item"><div class="item-ic">${t.cat.split(' ')[0]}</div><div class="item-tx"><div class="item-name">${nombre}</div><div class="item-date">${t.fecha}</div></div><div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div></div>`;
-    }).join('')}</div>
-  `).join('');
-  document.getElementById('histList').innerHTML=html||'<div class="empty"><div class="empty-ic">📜</div><p>Sin historial aún</p></div>';
+    }).join('');
+    return `<div class="ciclo-group">
+      <div class="ciclo-header">
+        <div><div class="ciclo-h-rango">${cicloLabel(key)}${esActual?' <span class="ciclo-actual-badge">actual</span>':''}</div>
+        <div class="ciclo-h-sub">↑ ${fmt(ing)} · ↓ ${fmt(gas)}</div></div>
+      </div>
+      ${filas}
+    </div>`;
+  }).join('');
+  document.getElementById('histList').innerHTML=html;
 }
 
 function renderResumen(){
   const t=totals();
-  const gas_diarios=txs.filter(x=>x.tipo==='gasto').reduce((a,x)=>a+x.monto,0);
+  const gas_diarios=t.gas;
+  const nMovs=txsDeCiclo(cicloActivo||cicloDeHoy()).length;
   document.getElementById('resSection').innerHTML=`
     <div class="item"><div class="item-tx"><div class="item-name">Total ingresos</div></div><div class="item-amt in">${fmt(t.ing)}</div></div>
     <div class="item"><div class="item-tx"><div class="item-name">Gastos diarios registrados</div></div><div class="item-amt out">${fmt(gas_diarios)}</div></div>
     <div class="item"><div class="item-tx"><div class="item-name">Gastos fijos pagados</div></div><div class="item-amt out">${fmt(t.gasPagados)}</div></div>
     <div class="item"><div class="item-tx"><div class="item-name" style="font-weight:700">Diferencial</div></div><div class="item-amt" style="color:var(--blue)">${fmt(t.dif)}</div></div>
     <div class="item"><div class="item-tx"><div class="item-name">Ahorro acumulado</div></div><div class="item-amt" style="color:var(--green)">${fmt(ahorroAcumulado)}</div></div>
-    <div class="item"><div class="item-tx"><div class="item-name">Total movimientos</div></div><div class="item-amt" style="color:var(--dark)}">${txs.length}</div></div>
+    <div class="item"><div class="item-tx"><div class="item-name">Movimientos del ciclo</div></div><div class="item-amt" style="color:var(--dark)}">${nMovs}</div></div>
   `;
 }
 
