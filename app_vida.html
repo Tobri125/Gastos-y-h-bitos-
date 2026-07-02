@@ -107,6 +107,9 @@
   .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
   .amount-disp{font-size:40px;font-weight:700;text-align:center;color:var(--dark);margin:20px 0}
   .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .detalle-input{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:14px;font-size:15px;margin-bottom:14px;background:#fff;color:var(--dark);outline:none;transition:.2s;box-sizing:border-box}
+  .detalle-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.12)}
+  .detalle-input::placeholder{color:#b8c0cc}
   .numpad b{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center;cursor:pointer;font-weight:600;font-size:20px;transition:.15s}
   .numpad b:active{background:var(--line)}
   .numpad b.del{background:#fdeded;color:var(--red);border:none}
@@ -303,6 +306,7 @@
       </div>
       <div class="chips" id="txChips"></div>
       <div class="amount-disp" id="txAmount">$0</div>
+      <input id="txDetalle" class="detalle-input" type="text" placeholder="Detalle (ej: pan con café, almuerzo con Caro...)" maxlength="60">
       <div class="numpad">
         <b onclick="addDigit('1')">1</b><b onclick="addDigit('2')">2</b><b onclick="addDigit('3')">3</b>
         <b onclick="addDigit('4')">4</b><b onclick="addDigit('5')">5</b><b onclick="addDigit('6')">6</b>
@@ -411,39 +415,39 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v5-diferencial';
+const VERSION='v6-detalle';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
-  {tipo:'ingreso',monto:1753108,cat:'💼 Sueldo',fecha:'1 jun'},
-  {tipo:'ingreso',monto:900000,cat:'💰 Ingreso adicional',fecha:'15 jun'},
-  {tipo:'gasto',monto:16508,cat:'🚌 Transporte',fecha:'21 jun'},
-  {tipo:'gasto',monto:41590,cat:'🚌 Transporte',fecha:'22 jun'},
-  {tipo:'gasto',monto:23979,cat:'🚌 Transporte',fecha:'22 jun'},
-  {tipo:'gasto',monto:6108,cat:'🚌 Transporte',fecha:'22 jun'},
-  {tipo:'gasto',monto:1741,cat:'🚌 Transporte',fecha:'22 jun'},
-  {tipo:'gasto',monto:23922,cat:'🚌 Transporte',fecha:'22 jun'},
-  {tipo:'gasto',monto:300000,cat:'💳 Deuda',fecha:'22 jun'},
-  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'22 jun'},
-  {tipo:'gasto',monto:40000,cat:'⛽ Bencina',fecha:'22 jun'},
-  {tipo:'gasto',monto:41800,cat:'🎮 Entretención',fecha:'22 jun'},
-  {tipo:'gasto',monto:30000,cat:'✦ Varios',fecha:'22 jun'},
-  {tipo:'gasto',monto:3890,cat:'🍽️ Comida',fecha:'23 jun'},
-  {tipo:'gasto',monto:6665,cat:'🍽️ Comida',fecha:'23 jun'},
-  {tipo:'gasto',monto:1700,cat:'🍽️ Comida',fecha:'24 jun'},
-  {tipo:'gasto',monto:29730,cat:'🏠 Hogar',fecha:'24 jun'},
-  {tipo:'gasto',monto:29730,cat:'🏠 Hogar',fecha:'24 jun'},
-  {tipo:'gasto',monto:1200,cat:'🍽️ Comida',fecha:'24 jun'},
-  {tipo:'gasto',monto:5000,cat:'🚌 Transporte',fecha:'24 jun'},
-  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'24 jun'},
-  {tipo:'gasto',monto:10000,cat:'✦ Varios',fecha:'24 jun'},
-  {tipo:'gasto',monto:65000,cat:'🩺 Salud',fecha:'25 jun'},
-  {tipo:'gasto',monto:2692,cat:'🍽️ Comida',fecha:'25 jun'},
-  {tipo:'gasto',monto:2948,cat:'🍽️ Comida',fecha:'26 jun'},
-  {tipo:'gasto',monto:50000,cat:'⛽ Bencina',fecha:'27 jun'},
-  {tipo:'gasto',monto:28600,cat:'🍽️ Comida',fecha:'27 jun'},
-  {tipo:'gasto',monto:1200,cat:'🍽️ Comida',fecha:'26 jun'},
-  {tipo:'gasto',monto:2928,cat:'🍽️ Comida',fecha:'30 jun'}
+  {tipo:'ingreso',monto:1753108,cat:'💼 Sueldo',fecha:'1 jun',detalle:'Sueldo mensual'},
+  {tipo:'ingreso',monto:900000,cat:'💰 Ingreso adicional',fecha:'15 jun',detalle:'Ingreso extra'},
+  {tipo:'gasto',monto:16508,cat:'🚌 Transporte',fecha:'21 jun',detalle:'Autopista Costanera'},
+  {tipo:'gasto',monto:41590,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Norte'},
+  {tipo:'gasto',monto:23979,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Ruta 78/Ruta 66/Ruta68'},
+  {tipo:'gasto',monto:6108,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Sur'},
+  {tipo:'gasto',monto:1741,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Vespucio Oriente (AVO1)'},
+  {tipo:'gasto',monto:23922,cat:'🚌 Transporte',fecha:'22 jun',detalle:'Autopista Central/Autopase'},
+  {tipo:'gasto',monto:300000,cat:'💳 Deuda',fecha:'22 jun',detalle:'Prestamo Caro'},
+  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'22 jun',detalle:'Kine'},
+  {tipo:'gasto',monto:40000,cat:'⛽ Bencina',fecha:'22 jun',detalle:'becina'},
+  {tipo:'gasto',monto:41800,cat:'🎮 Entretención',fecha:'22 jun',detalle:'comic'},
+  {tipo:'gasto',monto:30000,cat:'✦ Varios',fecha:'22 jun',detalle:'perfume'},
+  {tipo:'gasto',monto:3890,cat:'🍽️ Comida',fecha:'23 jun',detalle:'desayuno'},
+  {tipo:'gasto',monto:6665,cat:'🍽️ Comida',fecha:'23 jun',detalle:'gotitas te y galletas'},
+  {tipo:'gasto',monto:1700,cat:'🍽️ Comida',fecha:'24 jun',detalle:'Pan desayuno'},
+  {tipo:'gasto',monto:29730,cat:'🏠 Hogar',fecha:'24 jun',detalle:'Movistar'},
+  {tipo:'gasto',monto:29730,cat:'🏠 Hogar',fecha:'24 jun',detalle:'telefono Xime movistar'},
+  {tipo:'gasto',monto:1200,cat:'🍽️ Comida',fecha:'24 jun',detalle:'mani'},
+  {tipo:'gasto',monto:5000,cat:'🚌 Transporte',fecha:'24 jun',detalle:'metro'},
+  {tipo:'gasto',monto:40000,cat:'🩺 Salud',fecha:'24 jun',detalle:'terapia rodilla'},
+  {tipo:'gasto',monto:10000,cat:'✦ Varios',fecha:'24 jun',detalle:'tiotito'},
+  {tipo:'gasto',monto:65000,cat:'🩺 Salud',fecha:'25 jun',detalle:'test de lactato'},
+  {tipo:'gasto',monto:2692,cat:'🍽️ Comida',fecha:'25 jun',detalle:'pan mañanero'},
+  {tipo:'gasto',monto:2948,cat:'🍽️ Comida',fecha:'26 jun',detalle:'pan mañanero'},
+  {tipo:'gasto',monto:50000,cat:'⛽ Bencina',fecha:'27 jun',detalle:'bencina'},
+  {tipo:'gasto',monto:28600,cat:'🍽️ Comida',fecha:'27 jun',detalle:'almuerzo'},
+  {tipo:'gasto',monto:1200,cat:'🍽️ Comida',fecha:'26 jun',detalle:'vienesa'},
+  {tipo:'gasto',monto:2928,cat:'🍽️ Comida',fecha:'30 jun',detalle:'pan mañanero'}
 ];
 const SEED_FIJOS=[
   {nombre:'Auto (cuota crédito)',emoji:'🚗',monto:830000,pagado:true},
@@ -635,9 +639,11 @@ function renderDonut(){
 
 function renderMov(){
   const recent=txs.slice().reverse().slice(0,6);
-  document.getElementById('movList').innerHTML = recent.length ? recent.map(t=>`
-    <div class="item"><div class="item-ic">${t.cat.split(' ')[0]}</div><div class="item-tx"><div class="item-name">${t.cat.replace(/^[^\s]+\s/,'')}</div><div class="item-date">${t.fecha}</div></div><div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div></div>
-  `).join('') : '<div class="empty"><div class="empty-ic">📊</div><p>Sin movimientos aún<br>Toca + para registrar</p></div>';
+  document.getElementById('movList').innerHTML = recent.length ? recent.map(t=>{
+    const catName=t.cat.replace(/^[^\s]+\s/,'');
+    const nombre=t.detalle?`${catName} · ${t.detalle}`:catName;
+    return `<div class="item"><div class="item-ic">${t.cat.split(' ')[0]}</div><div class="item-tx"><div class="item-name">${nombre}</div><div class="item-date">${t.fecha}</div></div><div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div></div>`;
+  }).join('') : '<div class="empty"><div class="empty-ic">📊</div><p>Sin movimientos aún<br>Toca + para registrar</p></div>';
 }
 
 function renderFijos(){
@@ -667,10 +673,12 @@ function saveTx(){
   if(!currentCat){toast('Selecciona una categoría');return;}
   const now=new Date();
   const fecha=now.getDate()+' '+MES[now.getMonth()];
-  txs.push({tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha});
+  const detalle=document.getElementById('txDetalle').value.trim();
+  txs.push({tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha,detalle});
   persist();
   txAmt='';currentCat='';
   document.getElementById('txAmount').textContent='$0';
+  document.getElementById('txDetalle').value='';
   toast('Movimiento guardado ✓');
   setScreen('v_inicio');
 }
@@ -683,7 +691,11 @@ function renderHist(){
   });
   const html=Object.entries(byMonth).map(([m,items])=>`
     <div style="margin-bottom:8px"><div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;padding:8px 0">${m} 2026</div>
-    ${items.map(t=>`<div class="item"><div class="item-ic">${t.cat.split(' ')[0]}</div><div class="item-tx"><div class="item-name">${t.cat.replace(/^[^\s]+\s/,'')}</div><div class="item-date">${t.fecha}</div></div><div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div></div>`).join('')}</div>
+    ${items.map(t=>{
+      const catName=t.cat.replace(/^[^\s]+\s/,'');
+      const nombre=t.detalle?`${catName} · ${t.detalle}`:catName;
+      return `<div class="item"><div class="item-ic">${t.cat.split(' ')[0]}</div><div class="item-tx"><div class="item-name">${nombre}</div><div class="item-date">${t.fecha}</div></div><div class="item-amt ${t.tipo==='ingreso'?'in':'out'}">${t.tipo==='ingreso'?'+':'−'}${fmt(t.monto)}</div></div>`;
+    }).join('')}</div>
   `).join('');
   document.getElementById('histList').innerHTML=html||'<div class="empty"><div class="empty-ic">📜</div><p>Sin historial aún</p></div>';
 }
