@@ -125,6 +125,11 @@
   .ciclo-sel{margin-bottom:14px}
   .ciclo-sel-lab{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
   .ciclo-select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;font-size:15px;background:#fff;color:var(--dark);outline:none;box-sizing:border-box}
+  .ciclo-fechas{display:flex;gap:10px}
+  .ciclo-fecha-campo{flex:1;display:flex;flex-direction:column;gap:4px}
+  .ciclo-fecha-lab{font-size:11px;color:var(--muted);font-weight:600}
+  .ciclo-date{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;font-size:14px;background:#fff;color:var(--dark);outline:none;box-sizing:border-box;font-family:inherit}
+  .ciclo-date:focus{border-color:var(--green)}
   .item-edit{position:relative}
   .item-edit .item-tx{cursor:pointer}
   .item-del{background:none;border:none;font-size:16px;cursor:pointer;padding:4px 6px;margin-left:6px;opacity:.5;transition:.15s;flex-shrink:0}
@@ -222,6 +227,14 @@
   .sheet-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
   .sheet-btn-del{width:100%;padding:12px;background:none;color:#ef4444;border:1px solid #fdd;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px}
   .emoji-pick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .emoji-current{display:flex;align-items:center;gap:12px;background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px;cursor:pointer}
+  .emoji-current-big{font-size:30px;line-height:1}
+  .emoji-current-lab{flex:1;font-size:13px;color:var(--muted)}
+  .emoji-current-chev{font-size:14px;color:var(--muted)}
+  .emoji-picker-box{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px}
+  .emoji-cats{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .emoji-cat-tab{flex-shrink:0;font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;background:#fff;color:var(--muted);cursor:pointer;border:1px solid var(--line);white-space:nowrap}
+  .emoji-cat-tab.on{background:var(--green);color:#fff;border-color:var(--green)}
   .emoji-opt{width:44px;height:44px;border-radius:12px;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:.2s}
   .emoji-opt.on{background:var(--green);transform:scale(1.1)}
 
@@ -328,8 +341,17 @@
       <div class="amount-disp" id="txAmount">$0</div>
       <input id="txDetalle" class="detalle-input" type="text" placeholder="Detalle (ej: pan con café, almuerzo con Caro...)" maxlength="60">
       <div id="txCicloSel" class="ciclo-sel" style="display:none">
-        <label class="ciclo-sel-lab">¿A qué ciclo pertenece?</label>
-        <select id="txCiclo" class="ciclo-select"></select>
+        <label class="ciclo-sel-lab">Ciclo de este ingreso</label>
+        <div class="ciclo-fechas">
+          <div class="ciclo-fecha-campo">
+            <span class="ciclo-fecha-lab">Inicio</span>
+            <input type="date" id="txCicloIni" class="ciclo-date">
+          </div>
+          <div class="ciclo-fecha-campo">
+            <span class="ciclo-fecha-lab">Fin</span>
+            <input type="date" id="txCicloFin" class="ciclo-date">
+          </div>
+        </div>
       </div>
       <div class="numpad">
         <b onclick="addDigit('1')">1</b><b onclick="addDigit('2')">2</b><b onclick="addDigit('3')">3</b>
@@ -443,7 +465,7 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v8-mejoras';
+const VERSION='v10-ciclo-manual';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
@@ -535,16 +557,49 @@ function inicioCiclo(year,month){
 function finCiclo(year,month){
   return habilAtras(new Date(year,month+1,18));
 }
-// ¿A qué ciclo pertenece una fecha?
+// ¿A qué ciclo pertenece una fecha? (primero revisa ciclos manuales definidos)
 function cicloDeFecha(dateObj){
+  // Si la fecha cae dentro de un ciclo manual (definido por un ingreso), usar ese
+  const manual=cicloManualParaFecha(dateObj);
+  if(manual)return manual;
   const y=dateObj.getFullYear(), m=dateObj.getMonth();
   const ini=inicioCiclo(y,m);
   if(dateObj>=ini) return cicloKey(y,m);
   const prev=new Date(y,m-1,1);
   return cicloKey(prev.getFullYear(),prev.getMonth());
 }
+// Busca si una fecha cae dentro de algún ciclo manual ya definido
+function cicloManualParaFecha(dateObj){
+  const custs={};
+  for(const t of txs){
+    if(t.ciclo && t.ciclo.startsWith('cust-') && t.cicloIni && t.cicloFin && !custs[t.ciclo]){
+      custs[t.ciclo]={ini:t.cicloIni, fin:t.cicloFin};
+    }
+  }
+  const iso=dateObj.getFullYear()+'-'+String(dateObj.getMonth()+1).padStart(2,'0')+'-'+String(dateObj.getDate()).padStart(2,'0');
+  for(const key in custs){
+    if(iso>=custs[key].ini && iso<=custs[key].fin) return key;
+  }
+  return null;
+}
 function cicloDeHoy(){return cicloDeFecha(new Date());}
+// Busca las fechas guardadas de un ciclo personalizado (cust-...) en los movimientos
+function fechasCicloManual(key){
+  const t=txs.find(x=>x.ciclo===key && x.cicloIni && x.cicloFin);
+  if(!t)return null;
+  const [iy,im,id]=t.cicloIni.split('-').map(Number);
+  const [fy,fm,fd]=t.cicloFin.split('-').map(Number);
+  return {inicio:new Date(iy,im-1,id), fin:new Date(fy,fm-1,fd)};
+}
 function rangoCiclo(key){
+  if(key && key.startsWith('cust-')){
+    const m=fechasCicloManual(key);
+    if(m)return m;
+    // fallback: la fecha del key
+    const [_,y,mo,d]=key.split('-').map((v,i)=>i===0?v:Number(v));
+    const ini=new Date(Number(key.slice(5,9)),Number(key.slice(10,12))-1,Number(key.slice(13,15)));
+    return {inicio:ini, fin:ini};
+  }
   const [y,m]=key.split('-').map(Number);
   return {inicio:inicioCiclo(y,m-1), fin:finCiclo(y,m-1)};
 }
@@ -555,7 +610,11 @@ function cicloLabel(key){
 function ciclosConDatos(){
   const set=new Set(txs.map(t=>t.ciclo||cicloDeHoy()));
   set.add(cicloDeHoy());
-  return [...set].sort().reverse();
+  // Ordenar por fecha de inicio real (para que los custom queden en su lugar)
+  return [...set].sort((a,b)=>{
+    const ra=rangoCiclo(a).inicio, rb=rangoCiclo(b).inicio;
+    return rb-ra; // más reciente primero
+  });
 }
 function txsDeCiclo(key){return txs.filter(t=>(t.ciclo||cicloDeHoy())===key);}
 
@@ -585,7 +644,16 @@ const DEFAULT_HABITS=[
   {nombre:'Dormir 23:00',emoji:'🌙',freq:'Todos los días',dias:{},days_selected:['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'],color:HABIT_COLORS[5]},
 ];
 
-const EMOJIS=['🎯','🏃','🏋️','🧘','🚴','🏊','⚽','🥋','🤸','💪','🏆','🎽','⏰','🌅','🌙','😴','📖','📚','✍️','💻','🎓','🧠','💡','🎸','🎹','🎨','🎮','📷','🎬','💧','🍎','🥗','🥦','🚫','🍺','🚭','☕','🍳','🧹','🧺','🛁','🦷','💊','🩺','❤️','🧘‍♂️','🙏','😊','📱','💰','📈','🗂️','✅','🎯','🐕','🌱','🎯'];
+const EMOJI_CATS=[
+  {nombre:'Deporte',emojis:['🏃','🏋️','🚴','🏊','⚽','🥋','🤸','💪','🏆','🎽','🧘','⛹️']},
+  {nombre:'Rutina',emojis:['⏰','🌅','🌙','😴','☕','🍳','🧹','🧺','🛁','📱','✅','🎯']},
+  {nombre:'Estudio',emojis:['📖','📚','✍️','💻','🎓','🧠','💡','📈','🗂️']},
+  {nombre:'Arte',emojis:['🎸','🎹','🎨','🎮','📷','🎬']},
+  {nombre:'Salud',emojis:['🍎','🥗','🥦','🚫','🚭','🦷','💊','🩺','❤️','🙏','😊','💧']},
+  {nombre:'Otros',emojis:['💰','🐕','🌱','🎯','🍺','🎯']},
+];
+const EMOJIS=EMOJI_CATS.flatMap(c=>c.emojis); // lista plana para retrocompat
+let emojiCatActiva=0;
 const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const DIAS=['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
 
@@ -785,14 +853,17 @@ function setTxMode(m){
   }
 }
 function poblarSelectorCiclo(){
-  const el=document.getElementById('txCiclo');
-  if(!el)return;
-  // Ofrecer el ciclo actual y el siguiente (por si el sueldo abre uno nuevo), más los con datos
-  const hoy=cicloDeHoy();
-  const [hy,hm]=hoy.split('-').map(Number);
-  const sig=cicloKey(hm===12?hy+1:hy, hm===12?0:hm); // mes siguiente
-  const opciones=[...new Set([sig,hoy,...ciclosConDatos()])];
-  el.innerHTML=opciones.map(k=>`<option value="${k}" ${k===hoy?'selected':''}>${cicloLabel(k)}</option>`).join('');
+  const iniEl=document.getElementById('txCicloIni');
+  const finEl=document.getElementById('txCicloFin');
+  if(!iniEl||!finEl)return;
+  // Pre-rellenar con el ciclo de hoy como sugerencia (editable)
+  const r=rangoCiclo(cicloDeHoy());
+  iniEl.value=isoDate(r.inicio);
+  finEl.value=isoDate(r.fin);
+}
+// Formatea Date a 'YYYY-MM-DD' local (para input date)
+function isoDate(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
 function addDigit(d){txAmt=(txAmt+d).slice(0,12);document.getElementById('txAmount').textContent=fmt(parseInt(txAmt||'0'));}
 function delDigit(){txAmt=txAmt.slice(0,-1);document.getElementById('txAmount').textContent=fmt(parseInt(txAmt||'0'));}
@@ -811,22 +882,35 @@ function saveTx(){
   if(!currentCat){toast('Selecciona una categoría');return;}
   const now=new Date();
   const detalle=document.getElementById('txDetalle').value.trim();
+  // Leer fechas manuales del ciclo (solo para ingresos)
+  let cicloManual=null;
+  if(txMode==='ingreso'){
+    const ini=document.getElementById('txCicloIni').value;
+    const fin=document.getElementById('txCicloFin').value;
+    if(!ini||!fin){toast('Ingresa fecha de inicio y fin del ciclo');return;}
+    if(fin<ini){toast('El fin no puede ser antes del inicio');return;}
+    cicloManual={key:'cust-'+ini, ini, fin};
+  }
   if(editandoTx!==null){
-    // Editar movimiento existente (mantiene su fecha y ciclo)
     const t=txs[editandoTx];
     t.tipo=txMode; t.monto=parseInt(txAmt); t.cat=currentCat; t.detalle=detalle;
-    if(txMode==='ingreso'){ const c=document.getElementById('txCiclo').value; if(c){t.ciclo=c;} }
+    if(cicloManual){ t.ciclo=cicloManual.key; t.cicloIni=cicloManual.ini; t.cicloFin=cicloManual.fin; }
     cicloActivo=t.ciclo||cicloDeHoy();
     editandoTx=null;
     persist();
     toast('Movimiento actualizado ✓');
   } else {
     const fecha=now.getDate()+' '+MES[now.getMonth()];
-    let ciclo=cicloDeFecha(now);
-    // Para ingresos, respetar el ciclo elegido en el selector
-    if(txMode==='ingreso'){ const c=document.getElementById('txCiclo').value; if(c)ciclo=c; }
+    let ciclo, cicloIni, cicloFin;
+    if(cicloManual){
+      ciclo=cicloManual.key; cicloIni=cicloManual.ini; cicloFin=cicloManual.fin;
+    } else {
+      ciclo=cicloDeFecha(now);
+    }
     const iso=now.toISOString().slice(0,10);
-    txs.push({tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha,detalle,ciclo,iso});
+    const mov={tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha,detalle,ciclo,iso};
+    if(cicloIni){mov.cicloIni=cicloIni; mov.cicloFin=cicloFin;}
+    txs.push(mov);
     cicloActivo=ciclo;
     persist();
     toast('Movimiento guardado ✓');
@@ -847,10 +931,16 @@ function editarTx(idx){
   document.getElementById('txAmount').textContent=fmt(t.monto);
   document.getElementById('txDetalle').value=t.detalle||'';
   if(t.tipo==='ingreso'){
-    poblarSelectorCiclo();
-    const sel=document.getElementById('txCiclo');
-    if(sel && t.ciclo){[...sel.options].forEach(o=>{if(o.value===t.ciclo)o.selected=true;});}
     document.getElementById('txCicloSel').style.display='block';
+    const iniEl=document.getElementById('txCicloIni');
+    const finEl=document.getElementById('txCicloFin');
+    // Usar fechas guardadas del movimiento, o derivarlas de su ciclo
+    if(t.cicloIni && t.cicloFin){
+      iniEl.value=t.cicloIni; finEl.value=t.cicloFin;
+    } else {
+      const r=rangoCiclo(t.ciclo||cicloDeHoy());
+      iniEl.value=isoDate(r.inicio); finEl.value=isoDate(r.fin);
+    }
   }
   setScreen('v_registrar');
 }
@@ -960,7 +1050,7 @@ function renderHabResumen(){
           : `<div class="barSeg empty" style="height:calc(${h}% - 2px)"></div>`;
       }).join('');
     }
-    return `<div class="barCol ${isToday?'today':''}"><div class="barTrack">${segs}</div><div class="barLb">${DIAS[i][0]}</div></div>`;
+    return `<div class="barCol ${isToday?'today':''}" onclick="abrirDia('${dk}',${i})"><div class="barTrack">${segs}</div><div class="barLb">${DIAS[i][0]}</div></div>`;
   }).join('');
   document.getElementById('barsWeek').innerHTML = barsHtml;
 
@@ -1081,6 +1171,43 @@ function toggleHabit(i){
   toast(habits[i].dias[tk]?'¡Bien hecho! ✓':'Desmarcado');
 }
 
+// Abrir panel de un día (incluye días pasados) para marcar hábitos olvidados
+let diaAbierto=null;
+function abrirDia(dk, dayIdx){
+  diaAbierto={dk,dayIdx};
+  const wd=weekDates();
+  // Nombre legible del día
+  const partes=dk.split('-'); // 'YYYY-M-D'
+  const fechaTxt=partes[2]+' '+MES[parseInt(partes[1])-1];
+  const nombreDia=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'][dayIdx];
+  const aplican=habits.map((h,gi)=>({h,gi})).filter(o=>habitAppliesTo(o.h,dayIdx));
+  let body;
+  if(!aplican.length){
+    body='<div class="empty"><div class="empty-ic">😌</div><p>Día de descanso<br>Sin hábitos programados</p></div>';
+  } else {
+    body=aplican.map(o=>{
+      const done=o.h.dias&&o.h.dias[dk];
+      const col=o.h.color||colorFor(o.gi);
+      return `<div class="habit"><div class="habit-ic" style="background:${done?col:'#f1f5f9'};box-shadow:inset 3px 0 0 ${col}">${o.h.emoji}</div><div class="habit-tx"><div class="habit-name">${o.h.nombre}</div></div><div class="habit-check ${done?'done':'pending'}" style="${done?'background:'+col+';border-color:'+col:''}" onclick="toggleHabitDia(${o.gi})">${done?'✓':''}</div></div>`;
+    }).join('');
+  }
+  document.getElementById('sheetTitle').textContent=nombreDia+' '+fechaTxt;
+  document.getElementById('sheetBody').innerHTML=`<div id="diaHabitList">${body}</div>
+    <button class="sheet-btn" style="margin-top:12px" onclick="closeSheet()">Listo</button>`;
+  document.getElementById('sheetBg').classList.add('on');
+  document.getElementById('sheet').classList.add('on');
+}
+function toggleHabitDia(i){
+  if(!diaAbierto)return;
+  const dk=diaAbierto.dk;
+  if(!habits[i].dias)habits[i].dias={};
+  habits[i].dias[dk]=!habits[i].dias[dk];
+  persist();
+  abrirDia(diaAbierto.dk, diaAbierto.dayIdx); // re-render panel
+  renderHabResumen(); // actualiza barras/anillo detrás
+  toast(habits[i].dias[dk]?'Marcado ✓':'Desmarcado');
+}
+
 function renderHabStats(){
   const wd=weekDates();
   if(!habits.length){document.getElementById('statsSection').innerHTML='<div class="empty"><div class="empty-ic">📊</div><p>Sin hábitos aún</p></div>';return;}
@@ -1127,14 +1254,42 @@ function renderSheetBody(btnText, nombreVal){
   const dayBtns=Object.keys(selectedDays).map(d=>`<b class="daybtn ${selectedDays[d]?'on':''}" data-day="${d}" onclick="toggleDay('${d}')">${d}</b>`).join('');
   const delBtn=editandoHabit!==null?`<button class="sheet-btn-del" onclick="eliminarHabit(${editandoHabit})">🗑️ Eliminar hábito</button>`:'';
   document.getElementById('sheetBody').innerHTML=`
-    <div class="emoji-pick" id="emojiPick"></div>
+    <div class="emoji-current" onclick="toggleEmojiPicker()">
+      <div class="emoji-current-big" id="emojiCurrent">${pickedEmoji}</div>
+      <div class="emoji-current-lab">Toca para cambiar el ícono</div>
+      <div class="emoji-current-chev" id="emojiChev">▾</div>
+    </div>
+    <div class="emoji-picker-box" id="emojiPickerBox" style="display:none">
+      <div class="emoji-cats" id="emojiCats"></div>
+      <div class="emoji-pick" id="emojiPick"></div>
+    </div>
     <input class="sheet-in" id="habitName" placeholder="Nombre del hábito (ej: Meditar)" value="${nombreVal?nombreVal.replace(/"/g,'&quot;'):''}">
     <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:8px">¿Qué días?</label>
     <div class="daygrid">${dayBtns}</div>
     <button class="sheet-btn" onclick="createHabit()">${btnText}</button>
     ${delBtn}
   `;
-  document.getElementById('emojiPick').innerHTML=EMOJIS.map(e=>`<div class="emoji-opt ${e===pickedEmoji?'on':''}" onclick="pickEmoji('${e}',this)">${e}</div>`).join('');
+  renderEmojiCats();
+}
+function toggleEmojiPicker(){
+  const box=document.getElementById('emojiPickerBox');
+  const chev=document.getElementById('emojiChev');
+  const abierto=box.style.display!=='none';
+  box.style.display=abierto?'none':'block';
+  chev.textContent=abierto?'▾':'▴';
+}
+function renderEmojiCats(){
+  const cats=document.getElementById('emojiCats');
+  if(!cats)return;
+  cats.innerHTML=EMOJI_CATS.map((c,i)=>`<b class="emoji-cat-tab ${i===emojiCatActiva?'on':''}" onclick="selEmojiCat(${i})">${c.nombre}</b>`).join('');
+  renderEmojiGrid();
+}
+function selEmojiCat(i){emojiCatActiva=i;renderEmojiCats();}
+function renderEmojiGrid(){
+  const grid=document.getElementById('emojiPick');
+  if(!grid)return;
+  const emojis=EMOJI_CATS[emojiCatActiva].emojis;
+  grid.innerHTML=emojis.map(e=>`<div class="emoji-opt ${e===pickedEmoji?'on':''}" onclick="pickEmoji('${e}',this)">${e}</div>`).join('');
 }
 function eliminarHabit(idx){
   if(!confirm('¿Eliminar este hábito? Se perderá su historial.'))return;
@@ -1146,7 +1301,7 @@ function eliminarHabit(idx){
 }
 function toggleDay(d){selectedDays[d]=!selectedDays[d];document.querySelector(`[data-day="${d}"]`).classList.toggle('on');}
 function closeSheet(){document.getElementById('sheetBg').classList.remove('on');document.getElementById('sheet').classList.remove('on');editandoHabit=null;}
-function pickEmoji(e,el){pickedEmoji=e;document.querySelectorAll('#emojiPick .emoji-opt').forEach(o=>o.classList.remove('on'));el.classList.add('on');}
+function pickEmoji(e,el){pickedEmoji=e;document.querySelectorAll('#emojiPick .emoji-opt').forEach(o=>o.classList.remove('on'));el.classList.add('on');const cur=document.getElementById('emojiCurrent');if(cur)cur.textContent=e;}
 function createHabit(){
   const name=document.getElementById('habitName').value.trim();
   if(!name){toast('Escribe un nombre');return;}
