@@ -184,6 +184,11 @@
   .legItem{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
   .legItem .legDot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
   .stats4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .statStrip{display:flex;align-items:center;justify-content:space-around;background:#fff;border:0.5px solid var(--line);border-radius:14px;padding:12px 8px;margin-bottom:12px}
+  .ss-item{display:flex;flex-direction:column;align-items:center;gap:1px;flex:1}
+  .ss-val{font-size:16px;font-weight:800;color:var(--dark)}
+  .ss-lab{font-size:9.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+  .ss-div{width:1px;height:26px;background:var(--line);flex-shrink:0}
   .st{border-radius:14px;padding:13px}
   .st.g{background:#e8f7f0}.st.b{background:#eaf2fd}.st.p{background:#f3e8fd}.st.o{background:#fdf4e8}
   .st-ic{font-size:18px;margin-bottom:6px}
@@ -235,6 +240,89 @@
   .sheet-in{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px;margin-bottom:12px}
   .sheet-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
   .sheet-btn-del{width:100%;padding:12px;background:none;color:#ef4444;border:1px solid #fdd;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px}
+  .tipo-toggle{display:flex;gap:8px;margin-bottom:10px}
+  .tipo-toggle b{flex:1;padding:10px;border-radius:12px;background:#f8fafc;border:2px solid var(--line);text-align:center;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s}
+  .tipo-toggle b span{display:block;font-size:9.5px;font-weight:600;margin-top:2px;opacity:.8}
+  .tipo-toggle b.t-core-on{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+  .tipo-toggle b.t-sem-on{background:#fef3c7;border-color:#f59e0b;color:#92400e}
+  .tipo-desc{font-size:11px;border-radius:10px;padding:9px 12px;margin-bottom:12px;line-height:1.5}
+  .tipo-desc.d-core{background:#fef2f2;color:#991b1b}
+  .tipo-desc.d-sem{background:#fffbeb;color:#92400e}
+  .meta-stepper{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .meta-lab{font-size:12px;color:var(--muted)}
+  .meta-btn{width:32px;height:32px;border-radius:50%;border:none;font-size:17px;font-weight:700;cursor:pointer}
+  .meta-btn.menos{background:#f1f5f9;color:var(--dark)}
+  .meta-btn.mas{background:var(--green);color:#fff}
+  .meta-num{font-size:18px;font-weight:800;color:var(--dark);min-width:24px;text-align:center}
+  .wkprog{height:7px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:6px;display:flex;gap:2px}
+  .wkseg{flex:1;border-radius:2px;background:#eef1f5}
+  .wkseg.on{background:#f59e0b}
+  .wkseg.done{background:#10b981}
+  .hab-sec-title{font-size:12px;font-weight:700;margin:2px 0 6px;display:flex;align-items:center;gap:5px}
+  .hab-sec-title.core{color:#991b1b}
+  .hab-sec-title.sem{color:#92400e}
+  .badge-mini{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;margin-top:3px}
+  .badge-mini.core{background:#fee2e2;color:#991b1b}
+  .badge-mini.sem{background:#fef3c7;color:#92400e}
+  .rrow{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:6px;font-size:12px}
+  .rrow.ok{background:#f0fdf4;color:#166534}
+  .rrow.fail{background:#fef2f2;color:#991b1b}
+  .rrow.part{background:#fffbeb;color:#92400e}
+  .rrow .rname{flex:1;font-weight:600}
+  .rrow .rres{font-weight:700;font-size:11px}
+  .sug-box{background:#eff6ff;border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;padding:10px 12px;font-size:11.5px;color:#1e40af;line-height:1.5;margin-top:10px}
+  .wrow{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:0.5px solid #f1f5f9}
+  .wrow:last-child{border-bottom:none}
+  .wic{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+  .wname{flex:1;font-size:12px;font-weight:600;color:var(--dark);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .wdots{display:flex;gap:3.5px;flex-shrink:0}
+  .wdot{width:13px;height:13px;border-radius:50%;background:#eef1f5;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:700}
+  .wdot.on{background:#10b981}
+  .wdot.rest{background:transparent;border:1px dashed #d5d9e0}
+  .wcnt{font-size:11px;font-weight:800;min-width:32px;text-align:right;flex-shrink:0}
+  /* ---- Mapas mentales ---- */
+  .mapa-card{display:flex;align-items:center;gap:12px;cursor:pointer}
+  .mapa-emoji{font-size:26px;width:44px;height:44px;background:#f1f5f9;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .mapa-info{flex:1;min-width:0}
+  .mapa-titulo{font-size:14px;font-weight:700;color:var(--dark)}
+  .mapa-sub{font-size:11px;color:var(--muted);margin-top:2px}
+  .mapa-dots{display:flex;gap:4px;margin-top:6px}
+  .mapa-dot{width:10px;height:10px;border-radius:50%}
+  .mapa-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .mapa-top .ciclo-nav{background:#e8ebf0;color:var(--dark)}
+  .mapa-top-tit{font-size:15px;font-weight:700;color:var(--dark);cursor:pointer}
+  .rama-card{padding:12px 14px}
+  .rama-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+  .rama-nombre{font-size:13.5px;font-weight:700;color:var(--dark);cursor:pointer;flex:1}
+  .idea-hijo{display:flex;align-items:center;gap:8px;padding:6px 0 6px 4px;border-bottom:0.5px solid #f5f7fa}
+  .idea-hijo:last-of-type{border-bottom:none}
+  .idea-hijo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .idea-hijo-txt{flex:1;font-size:12.5px;color:var(--dark);cursor:pointer}
+  .rama-add{display:block;font-size:11.5px;color:var(--green);font-weight:600;cursor:pointer;padding-top:8px}
+  .ideasworld .bn.on .bn-ic,.ideasworld .bn.on .bn-lab{color:#8b5cf6}
+  .ideasworld .bn-fab{background:#8b5cf6}
+  .ideasworld .wtoggle b.on{border-bottom-color:#8b5cf6}
+  .nuevo-mapa-form{border:2px solid #8b5cf6}
+  .nm-titulo{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:2px}
+  .nm-sub{font-size:11.5px;color:var(--muted);margin-bottom:10px}
+  .nm-botones{display:flex;gap:8px}
+  .nm-cancel{flex:1;padding:11px;background:#f1f5f9;color:var(--muted);border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer}
+  .nm-crear{flex:2;padding:11px;background:#8b5cf6;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer}
+  .edit-inline{display:flex;gap:6px;align-items:center;flex:1}
+  .edit-in{margin-bottom:0!important;padding:9px 12px!important;font-size:13px!important;flex:1}
+  .ei-ok{width:36px;height:36px;border-radius:10px;border:none;background:#10b981;color:#fff;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0}
+  .ei-no{width:36px;height:36px;border-radius:10px;border:none;background:#f1f5f9;color:var(--muted);font-size:13px;cursor:pointer;flex-shrink:0}
+  .edit-hint{font-size:10px;color:var(--faint);opacity:.7}
+  .guia-mapa{background:#faf5ff;border-color:#e9d5ff}
+  .guia-paso{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#4c1d95;padding:5px 0;line-height:1.5}
+  .guia-num{width:20px;height:20px;border-radius:50%;background:#8b5cf6;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .idea-toggle{width:16px;font-size:11px;color:var(--muted);cursor:pointer;text-align:center;flex-shrink:0;user-select:none}
+  .idea-mas{width:22px;height:22px;border-radius:7px;border:none;background:#f0ebfd;color:#8b5cf6;font-size:14px;font-weight:800;cursor:pointer;flex-shrink:0;line-height:1}
+  .idea-count{font-size:9px;font-weight:700;background:#f0ebfd;color:#8b5cf6;padding:1px 6px;border-radius:8px;flex-shrink:0}
+  .mapa-svg-card{padding:8px;position:relative;overflow:hidden}
+  .zoom-ctrl{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:5}
+  .zoom-ctrl button{width:32px;height:32px;border-radius:9px;border:0.5px solid var(--line);background:#fff;color:var(--dark);font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  .mapa-hint{text-align:center;font-size:10px;color:var(--faint);margin:-6px 0 10px}
   .emoji-pick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
   .emoji-current{display:flex;align-items:center;gap:12px;background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px;cursor:pointer}
   .emoji-current-big{font-size:30px;line-height:1}
@@ -303,6 +391,7 @@
   <div class="wtoggle">
     <b class="on" data-w="fin" onclick="setWorld('fin')">💰 Finanzas</b>
     <b data-w="hab" onclick="setWorld('hab')">🎯 Hábitos</b>
+    <b data-w="ideas" onclick="setWorld('ideas')">🧠 Ideas</b>
   </div>
 
   <div class="screen">
@@ -408,17 +497,12 @@
         <div class="barsWeek" id="barsWeek"></div>
         <div class="barsLegend" id="barsLegend"></div>
       </div>
-      <div class="stats4">
-        <div class="st g"><div class="st-ic">📋</div><div class="st-val" id="hTotal">0</div><div class="st-lab">Hábitos totales</div><div class="st-sub">Activos</div></div>
-        <div class="st b"><div class="st-ic">✅</div><div class="st-val" id="hDone">0</div><div class="st-lab">Completados hoy</div><div class="st-sub" id="hDonePct">0%</div></div>
-        <div class="st p"><div class="st-ic">📅</div><div class="st-val" id="hWeek">0/0</div><div class="st-lab">Esta semana</div><div class="st-sub" id="hWeekPct">0%</div></div>
-        <div class="st o"><div class="st-ic">🔥</div><div class="st-val" id="hMonth">0%</div><div class="st-lab">Promedio mensual</div><div class="st-sub">De cumplimiento</div></div>
-      </div>
       <div id="goalSummary"></div>
       <div class="card">
         <div class="sec-head"><h2>Hábitos de hoy</h2><a onclick="setScreen('v_habLista')">Ver todos ›</a></div>
         <div id="habitTodayList"></div>
       </div>
+      <div id="cierreSemana"></div>
       <div class="progress-card">
         <div class="prog-ring"><svg viewBox="0 0 36 36" width="50" height="50"><circle cx="18" cy="18" r="15.5" fill="none" stroke="#fff" stroke-width="4"/><circle id="progCircle" cx="18" cy="18" r="15.5" fill="none" stroke="var(--green)" stroke-width="4" stroke-dasharray="0 100" transform="rotate(-90 18 18)" stroke-linecap="round"/></svg><div class="prog-c" id="progPct">0%</div></div>
         <div class="prog-tx"><h3>Tu progreso general</h3><p id="progMsg">¡Comienza hoy! 📈</p></div>
@@ -443,6 +527,17 @@
     <div id="v_habMetas" class="view">
       <div class="sec-head"><h2>Mis metas</h2><a onclick="openGoalSheet()">+ Nueva meta</a></div>
       <div id="goalsList"></div>
+    </div>
+
+    <!-- ===== IDEAS: MIS MAPAS ===== -->
+    <div id="v_mapas" class="view">
+      <div class="sec-head"><h2>Mis mapas mentales</h2><a onclick="nuevoMapa()">+ Nuevo</a></div>
+      <div id="mapasList"></div>
+    </div>
+
+    <!-- ===== IDEAS: DETALLE DE MAPA ===== -->
+    <div id="v_mapaDetalle" class="view">
+      <div id="mapaDetalleCont"></div>
     </div>
 
     <!-- ===== AJUSTES ===== -->
@@ -476,7 +571,7 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v12-barras-vaso';
+const VERSION='v18e-tap-fix2';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
@@ -529,20 +624,66 @@ const SEED_FIJOS=[
   {nombre:'Crédito Banco Estado',emoji:'💳',monto:187964,pagado:true}
 ];
 const SEED_AHORRO=106000;
+const SEED_HABITS=[
+  {nombre:'Leer 5 minutos',emoji:'📖',freq:'Lun-dom',dias:{},days_selected:['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'],color:'#10b981',htipo:'core'},
+  {nombre:'Entrenamient de Triatlón',emoji:'🏃',freq:'Lun-sáb',dias:{},days_selected:['LUN','MAR','MIÉ','JUE','VIE','SÁB'],color:'#3b82f6',htipo:'core'},
+  {nombre:'Juijitsu',emoji:'🥋',freq:'Meta: 2x por semana',dias:{},days_selected:['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'],color:'#f59e0b',htipo:'semanal',meta:2},
+  {nombre:'Dormir a las 10:15',emoji:'🌙',freq:'Lun-dom',dias:{},days_selected:['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'],color:'#8b5cf6',htipo:'core'},
+  {nombre:'Llegar a la hora al trabajo',emoji:'⏰',freq:'Lun-vie',dias:{},days_selected:['LUN','MAR','MIÉ','JUE','VIE'],color:'#ec4899',htipo:'core'},
+  {nombre:'Despertar a las 6:30',emoji:'🌅',freq:'Lun-dom',dias:{},days_selected:['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'],color:'#06b6d4',htipo:'core'},
+];
+const SEED_MAPAS=[
+  {titulo:'Mi año 2026',emoji:'🚀',ramas:[
+    {texto:'Deporte',color:'#3b82f6',hijos:[
+      {texto:'Terminar triatlón sprint',hijos:[{texto:'Mejorar natación',hijos:[]},{texto:'Comprar zapatillas trail',hijos:[]}]},
+      {texto:'Subir de cinturón en BJJ',hijos:[]}
+    ]},
+    {texto:'Finanzas',color:'#10b981',hijos:[
+      {texto:'Ahorrar $1.000.000',hijos:[]},
+      {texto:'Bajar gastos hormiga',hijos:[]}
+    ]},
+    {texto:'Ideas de proyectos',color:'#f59e0b',hijos:[
+      {texto:'App Mi Vida',hijos:[{texto:'Agregar notificaciones',hijos:[]},{texto:'Mostrarla a amigos',hijos:[]}]},
+      {texto:'Aprender de inversiones',hijos:[]}
+    ]},
+  ]},
+];
+const SEED_GOALS=[
+  {nombre:'Competir en triatlón sprint',emoji:'🏃',inicio:'2026-07-01',meta:'2026-11-15'},
+  {nombre:'Subir de cinturón en Jiu-Jitsu',emoji:'🥋',inicio:'2026-07-01',meta:'2026-12-20'},
+  {nombre:'Ahorrar $1.000.000',emoji:'💰',inicio:'2026-07-01',meta:'2027-03-19'},
+];
 
 // Reset automático: al actualizar de versión, carga tus datos reales de junio una vez
 (function(){
   try{
     if(localStorage.getItem('miVidaVersion')!==VERSION){
-      const seed={txs:SEED_TXS,habits:[],fijos:SEED_FIJOS,goals:[],ahorroAcumulado:SEED_AHORRO,seeded:true};
-      localStorage.setItem(SKEY,JSON.stringify(seed));
+      const existente=localStorage.getItem(SKEY);
+      if(!existente){
+        // PRIMERA VEZ: cargar datos de ejemplo completos
+        const seed={txs:SEED_TXS,habits:SEED_HABITS,fijos:SEED_FIJOS,goals:SEED_GOALS,mapas:SEED_MAPAS,ahorroAcumulado:SEED_AHORRO,seeded:true};
+        localStorage.setItem(SKEY,JSON.stringify(seed));
+      } else {
+        // ACTUALIZACIÓN: conservar TODOS los datos del usuario.
+        // Solo completar secciones que no existan aún (ej: mapas nuevos).
+        try{
+          const d=JSON.parse(existente);
+          if(!d.txs||!d.txs.length)d.txs=SEED_TXS;
+          if(!d.habits||!d.habits.length)d.habits=SEED_HABITS;
+          if(!d.fijos||!d.fijos.length)d.fijos=SEED_FIJOS;
+          if(!d.goals||!d.goals.length)d.goals=SEED_GOALS;
+          if(!d.mapas||!d.mapas.length)d.mapas=SEED_MAPAS;
+          if(d.ahorroAcumulado===undefined)d.ahorroAcumulado=SEED_AHORRO;
+          localStorage.setItem(SKEY,JSON.stringify(d));
+        }catch(e){}
+      }
       localStorage.removeItem('miVidaData');
       localStorage.setItem('miVidaVersion',VERSION);
     }
   }catch(e){}
 })();
 let world='fin', txMode='gasto', txAmt='', currentCat='', pickedEmoji='🎯';
-let txs=[], habits=[], fijos=[], goals=[], seeded=false, ahorroAcumulado=0;
+let txs=[], habits=[], fijos=[], goals=[], mapas=[], seeded=false, ahorroAcumulado=0;
 let cicloActivo=null; // ciclo seleccionado en la vista (null = ciclo de hoy)
 
 // ==== SISTEMA DE CICLOS FINANCIEROS (corte día 19, límites ajustados a día hábil) ====
@@ -694,13 +835,14 @@ const DIAS=['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
 
 // ---- STORAGE ----
 function load(){try{return JSON.parse(localStorage.getItem(SKEY))||{};}catch(e){return {};}}
-function persist(){try{localStorage.setItem(SKEY,JSON.stringify({txs,habits,fijos,goals,ahorroAcumulado,seeded}));}catch(e){}}
+function persist(){try{localStorage.setItem(SKEY,JSON.stringify({txs,habits,fijos,goals,mapas,ahorroAcumulado,seeded}));}catch(e){}}
 function init(){
   const s=load();
   txs = s.txs || [];
   habits = s.habits || [];
   fijos = s.fijos || [];
   goals = s.goals || [];
+  mapas = s.mapas || [];
   ahorroAcumulado = s.ahorroAcumulado || 0;
   cicloActivo = cicloDeHoy();
 }
@@ -720,9 +862,14 @@ const NAV_HAB=[
   {id:'v_habMetas',ic:'🎯',lab:'Metas'},
   {id:'v_settings',ic:'⚙️',lab:'Más'},
 ];
+const NAV_IDEAS=[
+  {id:'v_mapas',ic:'🧠',lab:'Mapas'},
+  {fab:true},
+  {id:'v_settings',ic:'⚙️',lab:'Más'},
+];
 
 function renderNav(){
-  const nav = world==='fin'?NAV_FIN:NAV_HAB;
+  const nav = world==='fin'?NAV_FIN:world==='hab'?NAV_HAB:NAV_IDEAS;
   const activeView = document.querySelector('.view.on')?.id;
   document.getElementById('botnav').innerHTML = nav.map(n=>{
     if(n.fab) return `<div class="bn"><div class="bn-fab" onclick="fabAction()">+</div></div>`;
@@ -733,7 +880,11 @@ function renderNav(){
 
 function fabAction(){
   if(world==='fin'){ nuevoTx('gasto'); }
-  else { openSheet(); }
+  else if(world==='hab'){ openSheet(); }
+  else { // ideas
+    if(document.getElementById('v_mapaDetalle').classList.contains('on')) agregarRama();
+    else nuevoMapa();
+  }
 }
 
 // ---- WORLD SWITCH ----
@@ -741,9 +892,10 @@ function setWorld(w){
   world=w;
   document.querySelectorAll('.wtoggle b').forEach(b=>{b.classList.remove('on');if(b.dataset.w===w)b.classList.add('on');});
   document.getElementById('app').classList.toggle('habworld', w==='hab');
-  document.getElementById('tbTitle').textContent = w==='fin'?'Mis Finanzas':'Mis Hábitos';
-  document.getElementById('tbSub').textContent = w==='fin'?'Control personal':'Construye tu mejor versión';
-  setScreen(w==='fin'?'v_inicio':'v_habResumen');
+  document.getElementById('app').classList.toggle('ideasworld', w==='ideas');
+  document.getElementById('tbTitle').textContent = w==='fin'?'Mis Finanzas':w==='hab'?'Mis Hábitos':'Mis Ideas';
+  document.getElementById('tbSub').textContent = w==='fin'?'Control personal':w==='hab'?'Construye tu mejor versión':'Mapea lo que piensas';
+  setScreen(w==='fin'?'v_inicio':w==='hab'?'v_habResumen':'v_mapas');
 }
 
 function setScreen(id){
@@ -759,6 +911,7 @@ function setScreen(id){
   if(id==='v_habLista') renderHabList();
   if(id==='v_habStats') renderHabStats();
   if(id==='v_habMetas') renderGoals();
+  if(id==='v_mapas') renderMapas();
   document.querySelector('.screen').scrollTop=0;
 }
 
@@ -1057,17 +1210,17 @@ function renderHabResumen(){
   const tk=todayKey();
   const todayIdx=(new Date().getDay()+6)%7;
 
-  // ---- ANILLO: % de hoy ----
-  const habitsToday = habits.filter(h=>habitAppliesTo(h,todayIdx));
+  // ---- ANILLO: % de hoy (solo CORE; los semanales se evalúan aparte) ----
+  const habitsToday = habits.filter(h=>!esSemanal(h)&&habitAppliesTo(h,todayIdx));
   const doneToday = habitsToday.filter(h=>h.dias&&h.dias[tk]).length;
   const total = habitsToday.length;
   const pctHoy = total?Math.round(doneToday/total*100):0;
   document.getElementById('ringWkPct').textContent=pctHoy+'%';
   document.getElementById('ringWkBar').setAttribute('stroke-dasharray',`${pctHoy} ${100-pctHoy}`);
 
-  // ---- BARRAS últimos 7 días (relleno proporcional a lo cumplido) ----
+  // ---- BARRAS últimos 7 días (solo CORE, relleno proporcional) ----
   const barsHtml = wd.map((dk,i)=>{
-    const aplican = habits.map((h,gi)=>({h,gi})).filter(o=>habitAppliesTo(o.h,i));
+    const aplican = habits.map((h,gi)=>({h,gi})).filter(o=>!esSemanal(o.h)&&habitAppliesTo(o.h,i));
     const n = aplican.length;
     const hechos = aplican.filter(o=>o.h.dias && o.h.dias[dk]).length;
     const isToday = dk===tk;
@@ -1104,20 +1257,28 @@ function renderHabResumen(){
     : '';
 
   // ---- stats4 (tarjetas de abajo) ----
-  document.getElementById('hTotal').textContent=habits.length;
-  document.getElementById('hDone').textContent=doneToday;
-  document.getElementById('hDonePct').textContent=total?pctHoy+'%':'0%';
+  const _ht=document.getElementById('hTotal'); if(_ht)_ht.textContent=habits.length;
+  const _hd=document.getElementById('hDone'); if(_hd)_hd.textContent=doneToday;
+  const _dp=document.getElementById('hDonePct'); if(_dp)_dp.textContent=total?pctHoy+'%':'0%';
   // week count
   let weekDone=0, weekTotal=0;
   wd.forEach((dk,i)=>{
     habits.forEach(h=>{
+      if(esSemanal(h))return; // los semanales se cuentan por meta abajo
       if(habitAppliesTo(h,i)){weekTotal++;if(h.dias&&h.dias[dk])weekDone++;}
     });
   });
-  document.getElementById('hWeek').textContent=weekDone+'/'+weekTotal;
-  document.getElementById('hWeekPct').textContent=weekTotal?Math.round(weekDone/weekTotal*100)+'%':'0%';
+  // Semanales: aportan su meta al total y sus veces (cap a la meta) a lo hecho
+  habits.filter(esSemanal).forEach(h=>{
+    const meta=h.meta||3;
+    const veces=wd.filter(dk=>h.dias&&h.dias[dk]).length;
+    weekTotal+=meta;
+    weekDone+=Math.min(veces,meta);
+  });
+  const _hw=document.getElementById('hWeek'); if(_hw)_hw.textContent=weekDone+'/'+weekTotal;
+  const _wp=document.getElementById('hWeekPct'); if(_wp)_wp.textContent=weekTotal?Math.round(weekDone/weekTotal*100)+'%':'0%';
   const monthPct=weekTotal?Math.round(weekDone/weekTotal*100):0;
-  document.getElementById('hMonth').textContent=monthPct+'%';
+  const _hm=document.getElementById('hMonth'); if(_hm)_hm.textContent=monthPct+'%';
 
   // ---- racha ----
   const streak=calcStreak();
@@ -1144,6 +1305,97 @@ function renderHabResumen(){
   renderGoalSummary();
   // ---- hábitos de hoy marcables ----
   const htl=document.getElementById('habitTodayList'); if(htl)htl.innerHTML=htmlHabitosHoy();
+  // ---- cierre de semana ----
+  renderCierreSemana();
+}
+
+// ==== CIERRE DE SEMANA (pantalla 2) ====
+// Domingo: muestra el cierre de ESTA semana. Lunes: muestra el de la semana pasada.
+// Resto de días: muestra el avance de la semana en curso.
+function renderCierreSemana(){
+  const cont=document.getElementById('cierreSemana');
+  if(!cont)return;
+  const semanales=habits.filter(esSemanal);
+  const cores=habits.filter(h=>!esSemanal(h));
+  if(!habits.length){cont.innerHTML='';return;}
+  const hoy=new Date();
+  const dow=(hoy.getDay()+6)%7; // 0=LUN..6=DOM
+  const esDomingo=dow===6;
+  const esLunes=dow===0;
+  // Semana a evaluar: si es lunes, la pasada; si no, la actual
+  let wd=weekDates();
+  if(esLunes){
+    const lunPasado=new Date(hoy); lunPasado.setDate(hoy.getDate()-7);
+    wd=Array.from({length:7},(_,i)=>{const x=new Date(lunPasado);x.setDate(lunPasado.getDate()+i);return dkOf(x);});
+  }
+  const r=rangoStr(wd);
+  const titulo=esDomingo?'🏁 Cierre de semana':esLunes?'🏁 Así cerró tu semana pasada':'📈 Tu semana en curso';
+
+  // Filas de metas semanales
+  const filasSem=semanales.map(h=>{
+    const veces=wd.filter(dk=>h.dias&&h.dias[dk]).length;
+    const meta=h.meta||3;
+    const cumplida=veces>=meta;
+    const col=cumplida?'#10b981':(veces>=meta*0.6?'#f59e0b':'#ef4444');
+    // puntos por día: verde=marcado, gris=no, punteado=día no habilitado
+    const dots=wd.map((dk,i)=>{
+      const habil=habitAppliesTo(h,i);
+      const on=h.dias&&h.dias[dk];
+      if(!habil)return '<span class="wdot rest"></span>';
+      return `<span class="wdot ${on?'on':''}">${on?'✓':''}</span>`;
+    }).join('');
+    const estado=cumplida?' ✓':(esDomingo||esLunes?' ✗':'');
+    return `<div class="wrow"><span class="wic">${h.emoji}</span><span class="wname">${h.nombre}</span><div class="wdots">${dots}</div><span class="wcnt" style="color:${col}">${veces}/${meta}${estado}</span></div>`;
+  }).join('');
+
+  // Resumen de CORE de la semana (puntos por día)
+  const filasCore=cores.map(h=>{
+    let prog=0, tot=0;
+    const dots=wd.map((dk,i)=>{
+      const habil=habitAppliesTo(h,i);
+      if(!habil)return '<span class="wdot rest"></span>';
+      tot++;
+      const on=h.dias&&h.dias[dk];
+      if(on)prog++;
+      return `<span class="wdot ${on?'on':''}">${on?'✓':''}</span>`;
+    }).join('');
+    if(!tot)return '';
+    const perfecto=prog===tot;
+    const col=perfecto?'#10b981':(prog>=tot*0.6?'#f59e0b':'#ef4444');
+    return `<div class="wrow"><span class="wic">${h.emoji}</span><span class="wname">${h.nombre}</span><div class="wdots">${dots}</div><span class="wcnt" style="color:${col}">${prog}/${tot}${perfecto?' 💯':''}</span></div>`;
+  }).join('');
+
+  // Sugerencia inteligente: metas semanales falladas 3 semanas seguidas → sugerir bajar
+  let sugerencia='';
+  if(esDomingo||esLunes){
+    for(const h of semanales){
+      const meta=h.meta||3;
+      let fallosSeguidos=0;
+      for(let s=0;s<3;s++){
+        const lunS=new Date(hoy); lunS.setDate(hoy.getDate()-dow-7*s-(esLunes?7:0));
+        const wdS=Array.from({length:7},(_,i)=>{const x=new Date(lunS);x.setDate(lunS.getDate()+i);return dkOf(x);});
+        const v=wdS.filter(dk=>h.dias&&h.dias[dk]).length;
+        if(v<meta)fallosSeguidos++; else break;
+      }
+      if(fallosSeguidos>=3&&meta>1){
+        sugerencia=`<div class="sug-box">💡 Llevas 3 semanas sin cumplir "<b>${h.nombre}</b>" (meta ${meta}x). Hábitos Atómicos sugiere <b>bajar la meta</b> y subirla cuando sea fácil. Toca el hábito para ajustarla.</div>`;
+        break;
+      }
+    }
+  }
+
+  cont.innerHTML=`<div class="card">
+    <div class="sec-head" style="margin-bottom:10px"><h2>${titulo}</h2><span style="font-size:11px;color:var(--muted)">${r}</span></div>
+    ${semanales.length?`<div class="hab-sec-title sem">📅 Metas semanales</div>${filasSem}`:''}
+    ${cores.length?`<div class="hab-sec-title core" style="margin-top:${semanales.length?'12px':'2px'}">🔥 CORE</div>${filasCore}`:''}
+    ${sugerencia}
+  </div>`;
+}
+// "14 - 20 jul" desde las claves de la semana
+function rangoStr(wd){
+  const p1=wd[0].split('-'), p2=wd[6].split('-');
+  const m1=MES[parseInt(p1[1])-1], m2=MES[parseInt(p2[1])-1];
+  return m1===m2 ? `${p1[2]} - ${p2[2]} ${m2}` : `${p1[2]} ${m1} - ${p2[2]} ${m2}`;
 }
 
 function renderGoalSummary(){
@@ -1170,14 +1422,15 @@ function renderGoalSummary(){
 }
 
 function calcStreak(){
-  // Un día cuenta para la racha si TODOS los hábitos que aplicaban ese día se cumplieron.
-  // Días sin hábitos asignados (descanso) no rompen la racha: se saltan.
+  // Racha global: un día cuenta si TODOS los CORE que aplicaban ese día se cumplieron.
+  // Los hábitos semanales NO afectan la racha (se evalúan aparte, el domingo).
+  // Días sin hábitos CORE (descanso) no rompen la racha: se saltan.
   let current=0,best=0,run=0,started=false;
   for(let i=0;i<120;i++){
     const d=new Date();d.setDate(d.getDate()-i);
     const di=(d.getDay()+6)%7;
     const dk=dkOf(d);
-    const aplican=habits.filter(h=>habitAppliesTo(h,di));
+    const aplican=habits.filter(h=>!esSemanal(h)&&habitAppliesTo(h,di));
     if(aplican.length===0){continue;} // día de descanso: no cuenta ni rompe
     const todosHechos=aplican.every(h=>h.dias&&h.dias[dk]);
     if(todosHechos){
@@ -1194,22 +1447,64 @@ function calcStreak(){
   return {current,best};
 }
 
+// ---- Helpers de hábitos semanales ----
+function esSemanal(h){return h.htipo==='semanal';}
+// Cuántas veces se marcó el hábito en la semana actual
+function vecesEstaSemana(h){
+  const wd=weekDates();
+  return wd.filter(dk=>h.dias&&h.dias[dk]).length;
+}
+// Racha específica de un hábito CORE (días seguidos cumplidos)
+function rachaHabito(h){
+  let racha=0;
+  const hoy=new Date();
+  for(let i=0;i<365;i++){
+    const d=new Date(hoy); d.setDate(hoy.getDate()-i);
+    const di=(d.getDay()+6)%7;
+    if(!habitAppliesTo(h,di)) continue; // día no programado no rompe racha
+    const dk=dkOf(d);
+    if(h.dias&&h.dias[dk]) racha++;
+    else { if(i===0) continue; break; } // hoy sin marcar aún no rompe
+  }
+  return racha;
+}
+
 // Render de la lista de hábitos de hoy (reutilizable en resumen y en lista)
 function htmlHabitosHoy(){
   const tk=todayKey();
   const dayIdx=(new Date().getDay()+6)%7;
   const todayName=DIAS[dayIdx];
-  const habitsToday=habits.filter(h=>{
-    if(!h.days_selected)return true;
-    return h.days_selected.includes(todayName);
-  });
-  if(!habitsToday.length) return '<div class="empty"><div class="empty-ic">🎯</div><p>Sin hábitos para hoy<br>Todos programados para otros días</p></div>';
-  return habitsToday.map(h=>{
+  const cores=habits.filter(h=>!esSemanal(h)&&(!h.days_selected||h.days_selected.includes(todayName)));
+  const semanales=habits.filter(h=>esSemanal(h)&&(!h.days_selected||h.days_selected.includes(todayName)));
+  if(!cores.length&&!semanales.length) return '<div class="empty"><div class="empty-ic">🎯</div><p>Sin hábitos para hoy<br>Todos programados para otros días</p></div>';
+
+  const filaCore=h=>{
     const origIdx=habits.indexOf(h);
     const done=h.dias&&h.dias[tk];
     const col=h.color||colorFor(origIdx);
-    return `<div class="habit"><div class="habit-ic" style="background:${done?col:'#f1f5f9'};box-shadow:inset 3px 0 0 ${col}">${h.emoji}</div><div class="habit-tx" onclick="openSheetEdit(${origIdx})"><div class="habit-name">${h.nombre}</div><div class="habit-freq">${h.freq} · ✎ editar</div></div><div class="habit-check ${done?'done':'pending'}" style="${done?'background:'+col+';border-color:'+col:''}" onclick="toggleHabit(${origIdx})">${done?'✓':''}</div></div>`;
-  }).join('');
+    const racha=rachaHabito(h);
+    return `<div class="habit"><div class="habit-ic" style="background:${done?col:'#f1f5f9'};box-shadow:inset 3px 0 0 ${col}">${h.emoji}</div><div class="habit-tx" onclick="openSheetEdit(${origIdx})"><div class="habit-name">${h.nombre}</div><div class="habit-freq">${h.freq} · ✎</div><span class="badge-mini core">🔥 racha ${racha} ${racha===1?'día':'días'}</span></div><div class="habit-check ${done?'done':'pending'}" style="${done?'background:'+col+';border-color:'+col:''}" onclick="toggleHabit(${origIdx})">${done?'✓':''}</div></div>`;
+  };
+  const filaSem=h=>{
+    const origIdx=habits.indexOf(h);
+    const done=h.dias&&h.dias[tk];
+    const col=h.color||colorFor(origIdx);
+    const veces=vecesEstaSemana(h);
+    const meta=h.meta||3;
+    const cumplida=veces>=meta;
+    const segs=Array.from({length:meta},(_,i)=>`<div class="wkseg ${i<veces?(cumplida?'done':'on'):''}"></div>`).join('');
+    const txt=cumplida?`¡Meta cumplida! ${veces}/${meta} ✓`:`Llevas ${veces} de ${meta}`;
+    return `<div class="habit"><div class="habit-ic" style="background:${done?col:'#f1f5f9'};box-shadow:inset 3px 0 0 ${col}">${h.emoji}</div><div class="habit-tx" onclick="openSheetEdit(${origIdx})"><div class="habit-name">${h.nombre}</div><div class="habit-freq">${h.freq} · ✎</div><span class="badge-mini sem">📅 ${txt}</span><div class="wkprog">${segs}</div></div><div class="habit-check ${done?'done':'pending'}" style="${done?'background:'+col+';border-color:'+col:''}" onclick="toggleHabit(${origIdx})">${done?'✓':''}</div></div>`;
+  };
+
+  let html='';
+  if(cores.length){
+    html+=`<div class="hab-sec-title core">🔥 CORE · no negociables</div>`+cores.map(filaCore).join('');
+  }
+  if(semanales.length){
+    html+=`<div class="hab-sec-title sem" style="margin-top:${cores.length?'14px':'2px'}">📅 Metas semanales</div>`+semanales.map(filaSem).join('');
+  }
+  return html;
 }
 
 function renderHabList(){
@@ -1289,6 +1584,7 @@ let editandoHabit=null; // índice del hábito en edición (null = nuevo)
 function openSheet(){
   editandoHabit=null;
   pickedEmoji='🎯';
+  habitTipo='core'; habitMeta=3;
   selectedDays={LUN:true,MAR:true,MIÉ:true,JUE:true,VIE:true,SÁB:false,DOM:false};
   document.getElementById('sheetTitle').textContent='Nuevo hábito';
   renderSheetBody('Crear hábito');
@@ -1299,6 +1595,8 @@ function openSheetEdit(idx){
   editandoHabit=idx;
   const h=habits[idx];
   pickedEmoji=h.emoji||'🎯';
+  habitTipo=h.htipo||'core';
+  habitMeta=h.meta||3;
   const dias=h.days_selected||['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
   selectedDays={LUN:false,MAR:false,MIÉ:false,JUE:false,VIE:false,SÁB:false,DOM:false};
   dias.forEach(d=>selectedDays[d]=true);
@@ -1307,6 +1605,8 @@ function openSheetEdit(idx){
   document.getElementById('sheetBg').classList.add('on');
   document.getElementById('sheet').classList.add('on');
 }
+let habitTipo='core'; // tipo del hábito en el sheet: 'core' | 'semanal'
+let habitMeta=3;      // meta semanal (veces por semana)
 function renderSheetBody(btnText, nombreVal){
   const dayBtns=Object.keys(selectedDays).map(d=>`<b class="daybtn ${selectedDays[d]?'on':''}" data-day="${d}" onclick="toggleDay('${d}')">${d}</b>`).join('');
   const delBtn=editandoHabit!==null?`<button class="sheet-btn-del" onclick="eliminarHabit(${editandoHabit})">🗑️ Eliminar hábito</button>`:'';
@@ -1321,12 +1621,48 @@ function renderSheetBody(btnText, nombreVal){
       <div class="emoji-pick" id="emojiPick"></div>
     </div>
     <input class="sheet-in" id="habitName" placeholder="Nombre del hábito (ej: Meditar)" value="${nombreVal?nombreVal.replace(/"/g,'&quot;'):''}">
-    <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:8px">¿Qué días?</label>
-    <div class="daygrid">${dayBtns}</div>
+    <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:8px">Tipo de hábito</label>
+    <div class="tipo-toggle">
+      <b id="tipoCore" class="${habitTipo==='core'?'t-core-on':''}" onclick="setHabitTipo('core')">🔥 CORE<span>diario · racha</span></b>
+      <b id="tipoSem" class="${habitTipo==='semanal'?'t-sem-on':''}" onclick="setHabitTipo('semanal')">📅 Semanal<span>x veces/semana</span></b>
+    </div>
+    <div id="tipoDesc" class="tipo-desc"></div>
+    <div id="bloqueDias" style="display:block">
+      <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:8px">¿Qué días?</label>
+      <div class="daygrid">${dayBtns}</div>
+    </div>
+    <div id="bloqueMeta" style="display:${habitTipo==='semanal'?'flex':'none'}" class="meta-stepper">
+      <span class="meta-lab">Meta:</span>
+      <button class="meta-btn menos" onclick="cambiarMeta(-1)">−</button>
+      <span class="meta-num" id="metaNum">${habitMeta}</span>
+      <button class="meta-btn mas" onclick="cambiarMeta(1)">+</button>
+      <span class="meta-lab">veces por semana</span>
+    </div>
     <button class="sheet-btn" onclick="createHabit()">${btnText}</button>
     ${delBtn}
   `;
   renderEmojiCats();
+  actualizarTipoDesc();
+}
+function setHabitTipo(t){
+  habitTipo=t;
+  document.getElementById('tipoCore').className=t==='core'?'t-core-on':'';
+  document.getElementById('tipoSem').className=t==='semanal'?'t-sem-on':'';
+  // El selector de días queda visible en ambos tipos (en semanal define qué días PUEDE hacerse)
+  document.getElementById('bloqueMeta').style.display=t==='semanal'?'flex':'none';
+  actualizarTipoDesc();
+}
+function actualizarTipoDesc(){
+  const el=document.getElementById('tipoDesc');
+  if(!el)return;
+  el.innerHTML=habitTipo==='core'
+    ? '<b>CORE:</b> se hace todos los días que marques. Si fallas uno, la racha vuelve a cero. Sin negociación.'
+    : '<b>Semanal:</b> meta flexible. Eliges qué días puede hacerse y cumples si llegas a la meta antes del domingo.';
+  el.className='tipo-desc '+(habitTipo==='core'?'d-core':'d-sem');
+}
+function cambiarMeta(d){
+  habitMeta=Math.min(7,Math.max(1,habitMeta+d));
+  document.getElementById('metaNum').textContent=habitMeta;
 }
 function toggleEmojiPicker(){
   const box=document.getElementById('emojiPickerBox');
@@ -1362,22 +1698,445 @@ function pickEmoji(e,el){pickedEmoji=e;document.querySelectorAll('#emojiPick .em
 function createHabit(){
   const name=document.getElementById('habitName').value.trim();
   if(!name){toast('Escribe un nombre');return;}
-  const dias_activos=Object.keys(selectedDays).filter(d=>selectedDays[d]);
-  if(!dias_activos.length){toast('Selecciona al menos un día');return;}
-  const freq_txt=dias_activos.length===7?'Todos los días':dias_activos.join(', ');
+  let dias_activos, freq_txt;
+  if(habitTipo==='core'){
+    dias_activos=Object.keys(selectedDays).filter(d=>selectedDays[d]);
+    if(!dias_activos.length){toast('Selecciona al menos un día');return;}
+    freq_txt=dias_activos.length===7?'Todos los días':dias_activos.join(', ');
+  } else {
+    dias_activos=Object.keys(selectedDays).filter(d=>selectedDays[d]);
+    if(!dias_activos.length){toast('Selecciona al menos un día');return;}
+    if(habitMeta>dias_activos.length){toast('La meta ('+habitMeta+') no puede superar los días disponibles ('+dias_activos.length+')');return;}
+    const diasTxt=dias_activos.length===7?'':' ('+dias_activos.join(',').toLowerCase()+')';
+    freq_txt='Meta: '+habitMeta+'x por semana'+diasTxt;
+  }
   if(editandoHabit!==null){
     const h=habits[editandoHabit];
     h.nombre=name; h.emoji=pickedEmoji; h.freq=freq_txt; h.days_selected=dias_activos;
+    h.htipo=habitTipo; h.meta=habitTipo==='semanal'?habitMeta:undefined;
     editandoHabit=null;
     persist();closeSheet();
     setScreen('v_habLista');
     toast('Hábito actualizado ✓');
   } else {
-    habits.push({nombre:name,emoji:pickedEmoji,freq:freq_txt,dias:{},days_selected:dias_activos,color:colorFor(habits.length)});
+    habits.push({nombre:name,emoji:pickedEmoji,freq:freq_txt,dias:{},days_selected:dias_activos,color:colorFor(habits.length),htipo:habitTipo,meta:habitTipo==='semanal'?habitMeta:undefined});
     persist();closeSheet();
     setScreen('v_habLista');
     toast('Hábito creado ✓');
   }
+}
+
+// ================= MAPAS MENTALES (IDEAS) =================
+let mapaActivo=null; // índice del mapa abierto
+const MAPA_COLORS=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#ef4444','#84cc16'];
+
+function renderMapas(){
+  const cont=document.getElementById('mapasList');
+  if(!mapas.length){
+    cont.innerHTML='<div class="empty"><div class="empty-ic">🧠</div><p>Sin mapas aún<br>Toca "+ Nuevo" para mapear tu primera idea</p></div>';
+    return;
+  }
+  cont.innerHTML=mapas.map((m,i)=>{
+    const nRamas=m.ramas.length;
+    const nIdeas=m.ramas.reduce((a,r)=>a+(r.hijos?r.hijos.length:0),0);
+    const dots=m.ramas.slice(0,6).map(r=>`<span class="mapa-dot" style="background:${r.color}"></span>`).join('');
+    return `<div class="card mapa-card" onclick="abrirMapa(${i})">
+      <div class="mapa-emoji">${m.emoji||'🧠'}</div>
+      <div class="mapa-info">
+        <div class="mapa-titulo">${m.titulo}</div>
+        <div class="mapa-sub">${nRamas} ${nRamas===1?'rama':'ramas'} · ${nIdeas} ${nIdeas===1?'idea':'ideas'}</div>
+        <div class="mapa-dots">${dots}</div>
+      </div>
+      <button class="item-del" onclick="event.stopPropagation();eliminarMapa(${i})">🗑️</button>
+    </div>`;
+  }).join('');
+}
+
+function nuevoMapa(){
+  setScreen('v_mapas');
+  const cont=document.getElementById('mapasList');
+  const form=`<div class="card nuevo-mapa-form" id="nuevoMapaForm">
+    <div class="nm-titulo">🧠 Nuevo mapa mental</div>
+    <div class="nm-sub">Ponle nombre a tu idea central</div>
+    <input class="sheet-in" id="nmInput" placeholder="Ej: Ideas de negocio, Plan 2027..." maxlength="40" style="margin-bottom:10px">
+    <div class="nm-botones">
+      <button class="nm-cancel" onclick="renderMapas()">Cancelar</button>
+      <button class="nm-crear" onclick="confirmarNuevoMapa()">Crear mapa</button>
+    </div>
+  </div>`;
+  cont.innerHTML=form+cont.innerHTML;
+  setTimeout(()=>{const el=document.getElementById('nmInput');if(el)el.focus();},100);
+}
+function confirmarNuevoMapa(){
+  const el=document.getElementById('nmInput');
+  const titulo=el?el.value.trim():'';
+  if(!titulo){toast('Escribe un nombre');return;}
+  mapas.push({titulo,emoji:'🧠',ramas:[]});
+  persist();
+  abrirMapa(mapas.length-1);
+}
+
+function eliminarMapa(i){
+  if(!confirm('¿Eliminar el mapa "'+mapas[i].titulo+'" con todas sus ideas?'))return;
+  mapas.splice(i,1);
+  persist();renderMapas();
+  toast('Mapa eliminado');
+}
+
+function abrirMapa(i){
+  mapaActivo=i;
+  editandoNodo=null;
+  normalizarMapa(mapas[i]);
+  // Iniciar con todo plegado: solo se ve la idea central + ramas (cada una con su +N)
+  nodosCerrados=new Set();
+  plegarTodo(mapas[i]);
+  setScreen('v_mapaDetalle');
+  renderMapaDetalle();
+}
+// Agrega a nodosCerrados todos los nodos que tienen hijos (para iniciar compacto)
+function plegarTodo(m){
+  function rec(nodos,basePath){
+    nodos.forEach((nd,i)=>{
+      const path=[...basePath,i];
+      if(nd.hijos&&nd.hijos.length){
+        nodosCerrados.add(path.join('-'));
+        rec(nd.hijos,path);
+      }
+    });
+  }
+  rec(m.ramas||[],[]);
+}
+
+// ---- Normalización: ideas antiguas (strings) → nodos {texto,hijos:[]} anidables ----
+function normalizarMapa(m){
+  if(!m||!m.ramas)return;
+  const norm=n=>typeof n==='string'?{texto:n,hijos:[]}:(n.hijos?(n.hijos=n.hijos.map(norm),n):(n.hijos=[],n));
+  m.ramas.forEach(r=>{ r.hijos=(r.hijos||[]).map(norm); });
+}
+
+// Estado de edición inline: {tipo:'titulo'|'rama'|'nodo'|'nuevaRama'|'nuevoNodo', path}
+// path = [ri] para rama, [ri,i0,i1...] para nodos anidados
+let editandoNodo=null;
+let nodosCerrados=new Set(); // paths colapsados "0-1"
+
+function nodoPorPath(m,path){
+  // path[0]=rama; el resto navega hijos
+  let nodo=m.ramas[path[0]];
+  for(let k=1;k<path.length;k++) nodo=nodo.hijos[path[k]];
+  return nodo;
+}
+function pathStr(p){return p.join('-');}
+
+function renderMapaDetalle(){
+  const cont=document.getElementById('mapaDetalleCont');
+  const m=mapas[mapaActivo];
+  if(!m){setScreen('v_mapas');return;}
+  normalizarMapa(m);
+  const e=editandoNodo;
+
+  // --- ÁRBOL SVG completo (todas las ideas) con pan/zoom ---
+  const n=m.ramas.length;
+  const svg=construirArbolSVG(m);
+
+  const esEdTitulo=e&&e.tipo==='titulo';
+  const tituloHtml=esEdTitulo
+    ? `<div class="edit-inline"><input class="sheet-in edit-in" id="editInput" value="${m.titulo.replace(/"/g,'&quot;')}" maxlength="40"><button class="ei-ok" onclick="guardarEdicion()">✓</button><button class="ei-no" onclick="cancelarEdicion()">✕</button></div>`
+    : `<div class="mapa-top-tit" onclick="iniciarEdicion('titulo')">${m.emoji||'🧠'} ${m.titulo} <span class="edit-hint">✎</span></div>`;
+
+  const guia=!n?`<div class="card guia-mapa">
+    <div class="guia-paso"><span class="guia-num">1</span> Tu idea central ya está: <b>${m.titulo}</b></div>
+    <div class="guia-paso"><span class="guia-num">2</span> Agrega <b>ramas</b>: los temas grandes (ej: Deporte, Trabajo)</div>
+    <div class="guia-paso"><span class="guia-num">3</span> Cada idea se puede abrir con <b>+</b> y meterle más ideas adentro, sin límite</div>
+  </div>`:'';
+
+  // --- Render recursivo de nodos ---
+  function renderNodos(nodos,basePath,color,nivel){
+    return nodos.map((nd,i)=>{
+      const path=[...basePath,i];
+      const ps=pathStr(path);
+      const tieneHijos=nd.hijos&&nd.hijos.length>0;
+      const cerrado=nodosCerrados.has(ps);
+      const esEd=e&&e.tipo==='nodo'&&pathStr(e.path)===ps;
+      const esNuevoAqui=e&&e.tipo==='nuevoNodo'&&pathStr(e.path)===ps;
+
+      let fila;
+      if(esEd){
+        fila=`<div class="idea-hijo" style="margin-left:${nivel*16}px"><div class="edit-inline" style="flex:1"><input class="sheet-in edit-in" id="editInput" value="${nd.texto.replace(/"/g,'&quot;')}" maxlength="60"><button class="ei-ok" onclick="guardarEdicion()">✓</button><button class="ei-no" onclick="cancelarEdicion()">✕</button></div></div>`;
+      } else {
+        const flecha=tieneHijos?`<span class="idea-toggle" onclick="toggleNodo('${ps}')">${cerrado?'▸':'▾'}</span>`:`<span class="idea-hijo-dot" style="background:${color}"></span>`;
+        const contador=tieneHijos&&cerrado?`<span class="idea-count">${nd.hijos.length}</span>`:'';
+        fila=`<div class="idea-hijo" style="margin-left:${nivel*16}px">
+          ${flecha}
+          <span class="idea-hijo-txt" onclick="iniciarEdicion('nodo',null,${JSON.stringify(path).replace(/"/g,'&quot;')})">${nd.texto}</span>
+          ${contador}
+          <button class="idea-mas" onclick="iniciarEdicion('nuevoNodo',null,${JSON.stringify(path).replace(/"/g,'&quot;')})">+</button>
+          <button class="item-del" onclick="eliminarNodo(${JSON.stringify(path).replace(/"/g,'&quot;')})">✕</button>
+        </div>`;
+      }
+      // input para nueva sub-idea de este nodo
+      const nuevoInput=esNuevoAqui?`<div class="edit-inline" style="margin:6px 0 6px ${(nivel+1)*16}px"><input class="sheet-in edit-in" id="editInput" placeholder="Sub-idea de '${nd.texto.slice(0,20)}'..." maxlength="60"><button class="ei-ok" onclick="guardarEdicion()">✓</button><button class="ei-no" onclick="cancelarEdicion()">✕</button></div>`:'';
+      const hijosHtml=(tieneHijos&&!cerrado)?renderNodos(nd.hijos,path,color,nivel+1):'';
+      return fila+nuevoInput+hijosHtml;
+    }).join('');
+  }
+
+  const ramasHtml=m.ramas.map((r,ri)=>{
+    const esEdRama=e&&e.tipo==='rama'&&e.path&&e.path[0]===ri;
+    const nombreHtml=esEdRama
+      ? `<div class="edit-inline"><input class="sheet-in edit-in" id="editInput" value="${r.texto.replace(/"/g,'&quot;')}" maxlength="30"><button class="ei-ok" onclick="guardarEdicion()">✓</button><button class="ei-no" onclick="cancelarEdicion()">✕</button></div>`
+      : `<span class="rama-nombre" onclick="iniciarEdicion('rama',null,[${ri}])">${r.texto} <span class="edit-hint">✎</span></span>`;
+
+    const esNuevoRaiz=e&&e.tipo==='nuevoNodo'&&e.path&&e.path.length===1&&e.path[0]===ri;
+    const addHtml=esNuevoRaiz
+      ? `<div class="edit-inline" style="margin-top:8px"><input class="sheet-in edit-in" id="editInput" placeholder="Escribe tu idea..." maxlength="60"><button class="ei-ok" onclick="guardarEdicion()">✓</button><button class="ei-no" onclick="cancelarEdicion()">✕</button></div>`
+      : `<a class="rama-add" onclick="iniciarEdicion('nuevoNodo',null,[${ri}])">+ agregar idea</a>`;
+
+    return `<div class="card rama-card" id="rama${ri}" style="border-left:4px solid ${r.color}">
+      <div class="rama-head">${nombreHtml}<button class="item-del" onclick="eliminarRama(${ri})">🗑️</button></div>
+      ${renderNodos(r.hijos||[],[ri],r.color,0)}
+      ${addHtml}
+    </div>`;
+  }).join('');
+
+  const esNuevaRama=e&&e.tipo==='nuevaRama';
+  const nuevaRamaHtml=esNuevaRama
+    ? `<div class="card"><div class="nm-sub" style="margin-bottom:8px">Nombre de la rama (tema grande)</div><div class="edit-inline"><input class="sheet-in edit-in" id="editInput" placeholder="Ej: Deporte, Trabajo, Viajes..." maxlength="30"><button class="ei-ok" onclick="guardarEdicion()">✓</button><button class="ei-no" onclick="cancelarEdicion()">✕</button></div></div>`
+    : `<button class="sheet-btn" style="margin-top:4px;background:#8b5cf6" onclick="iniciarEdicion('nuevaRama')">+ Nueva rama</button>`;
+
+  cont.innerHTML=`
+    <div class="mapa-top">
+      <button class="ciclo-nav" onclick="setScreen('v_mapas')">‹</button>
+      ${tituloHtml}
+    </div>
+    ${n?`<div class="card mapa-svg-card"><div class="zoom-ctrl"><button onclick="zoomMapa(0.8)">+</button><button onclick="zoomMapa(1.25)">−</button><button onclick="resetMapa()" style="font-size:12px">⛶</button></div>${svg}</div><div class="mapa-hint">Arrastra para moverte · pellizca o usa +/− para zoom</div>`:''}
+    ${guia}
+    ${ramasHtml}
+    ${nuevaRamaHtml}
+  `;
+  setTimeout(()=>{const el=document.getElementById('editInput');if(el){el.focus();
+    el.addEventListener('keydown',ev=>{if(ev.key==='Enter')guardarEdicion();});
+  }
+  activarPanZoom();},80);
+}
+
+// ==== ÁRBOL SVG: layout jerárquico completo + pan/zoom ====
+let mapVB=null; // viewBox actual {x,y,w,h}
+function construirArbolSVG(m){
+  const ROW=36, COL=150;
+  // Un nodo cerrado se trata como hoja (no muestra hijos)
+  const cerrado=path=>path.length>0&&nodosCerrados.has(path.join('-'));
+  // layout: hojas apiladas verticalmente, padres centrados respecto a sus hijos
+  let leafY=0;
+  function layout(nd,path){
+    if(cerrado(path)||!nd.hijos||!nd.hijos.length){ nd._y=leafY++; return nd._y; }
+    const ys=nd.hijos.map((h,i)=>layout(h,[...path,i]));
+    nd._y=(ys[0]+ys[ys.length-1])/2;
+    return nd._y;
+  }
+  const raiz={texto:m.titulo,hijos:m.ramas};
+  layout(raiz,[]);
+  function prof(nd,path){ if(cerrado(path)||!nd.hijos||!nd.hijos.length)return 1; return 1+Math.max(...nd.hijos.map((h,i)=>prof(h,[...path,i]))); }
+  const maxProf=prof(raiz,[]);
+  const W=40+maxProf*COL+90;
+  const H=Math.max(leafY*ROW+50, 180);
+  const py=y=>28+y*ROW;
+
+  let elems='';
+  function caja(x,y,texto,fill,fs,bold){
+    const t=texto.length>16?texto.slice(0,15)+'…':texto;
+    const tw=Math.max(t.length*(fs*0.62)+18,44);
+    return {html:`<rect x="${x}" y="${y-13}" width="${tw}" height="26" rx="13" fill="${fill}"/><text x="${x+tw/2}" y="${y+4}" text-anchor="middle" font-size="${fs}" font-weight="${bold?700:600}" fill="#fff">${t}</text>`, w:tw};
+  }
+  function dibujar(nd,x,color,nivel,path){
+    const y=py(nd._y);
+    const c=caja(x,y,nd.texto,nivel===0?'#1e2a3a':color,nivel===0?12:10.5,nivel<=1);
+    const tieneHijos=nd.hijos&&nd.hijos.length>0;
+    const estaCerrado=cerrado(path);
+    const ps=path.join('-');
+    if(nivel>0&&tieneHijos){
+      // Nodo con símbolo de abrir/cerrar: círculo al borde derecho
+      const bx=x+c.w+11; // centro del círculo
+      let simbolo;
+      if(estaCerrado){
+        // cerrado: círculo relleno del color con +N (cuántas ideas adentro)
+        simbolo=`<circle cx="${bx}" cy="${y}" r="10" fill="${color}"/><text x="${bx}" y="${y+3.5}" text-anchor="middle" font-size="9" font-weight="800" fill="#fff">+${contarNodos(nd)}</text>`;
+      } else {
+        // abierto: círculo blanco con − del color
+        simbolo=`<circle cx="${bx}" cy="${y}" r="9" fill="#fff" stroke="${color}" stroke-width="2"/><text x="${bx}" y="${y+4}" text-anchor="middle" font-size="12" font-weight="800" fill="${color}">−</text>`;
+      }
+      elems+=`<g data-toggle="${ps}" style="cursor:pointer">${c.html}${simbolo}</g>`;
+    } else {
+      elems+=c.html;
+    }
+    if(!estaCerrado){
+      const salidaX=(nivel>0&&tieneHijos)?x+c.w+20:x+c.w; // las líneas salen después del círculo
+      (nd.hijos||[]).forEach((hj,i)=>{
+        const hy=py(hj._y);
+        const hx=salidaX+26;
+        const midX=salidaX+13;
+        const col2=nivel===0?(hj.color||'#8b5cf6'):color;
+        elems+=`<path d="M ${salidaX} ${y} C ${midX} ${y}, ${midX} ${hy}, ${hx} ${hy}" fill="none" stroke="${col2}" stroke-width="2" opacity="0.55"/>`;
+        dibujar(hj,hx,col2,nivel+1,[...path,i]);
+      });
+    }
+  }
+  dibujar(raiz,14,'#8b5cf6',0,[]);
+  if(!mapVB||mapVB._mapa!==mapaActivo){ mapVB={x:0,y:0,w:Math.min(W,420),h:Math.min(H,320),_mapa:mapaActivo}; }
+  mapVB._W=W; mapVB._H=H;
+  return `<svg id="mapaSVG" viewBox="${mapVB.x} ${mapVB.y} ${mapVB.w} ${mapVB.h}" style="width:100%;height:290px;touch-action:none;cursor:grab">${elems}</svg>`;
+}
+// Cuenta todas las ideas dentro de un nodo (recursivo)
+function contarNodos(nd){
+  if(!nd.hijos||!nd.hijos.length)return 0;
+  return nd.hijos.reduce((a,h)=>a+1+contarNodos(h),0);
+}
+// Toggle desde el SVG: ignora el tap si fue parte de un arrastre
+let svgMoved=false;
+function toggleNodoSVG(ps){
+  if(svgMoved){svgMoved=false;return;}
+  if(nodosCerrados.has(ps))nodosCerrados.delete(ps);
+  else nodosCerrados.add(ps);
+  renderMapaDetalle();
+}
+function zoomMapa(f){
+  if(!mapVB)return;
+  const cx=mapVB.x+mapVB.w/2, cy=mapVB.y+mapVB.h/2;
+  mapVB.w=Math.max(120,Math.min(mapVB.w*f, mapVB._W*2.5));
+  mapVB.h=Math.max(90,Math.min(mapVB.h*f, mapVB._H*2.5));
+  mapVB.x=cx-mapVB.w/2; mapVB.y=cy-mapVB.h/2;
+  aplicarVB();
+}
+function resetMapa(){
+  if(!mapVB)return;
+  mapVB.x=0;mapVB.y=0;mapVB.w=Math.min(mapVB._W,420);mapVB.h=Math.min(mapVB._H,320);
+  aplicarVB();
+}
+function aplicarVB(){
+  const s=document.getElementById('mapaSVG');
+  if(s)s.setAttribute('viewBox',`${mapVB.x} ${mapVB.y} ${mapVB.w} ${mapVB.h}`);
+}
+function activarPanZoom(){
+  const s=document.getElementById('mapaSVG');
+  if(!s||s._pz)return;
+  s._pz=true;
+  let dragging=false,lx=0,ly=0,pinchD=0,downTarget=null;
+  const pts=new Map();
+  s.addEventListener('pointerdown',ev=>{
+    ev.preventDefault();
+    svgMoved=false;
+    downTarget=ev.target; // guardar el elemento tocado ANTES de capturar el pointer
+    pts.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+    if(pts.size===1){dragging=true;lx=ev.clientX;ly=ev.clientY;try{s.setPointerCapture(ev.pointerId);}catch(e){}}
+  });
+  s.addEventListener('pointermove',ev=>{
+    if(!pts.has(ev.pointerId))return;
+    pts.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+    if(pts.size===2){
+      const vals=[...pts.values()];
+      const d=Math.hypot(vals[0].x-vals[1].x,vals[0].y-vals[1].y);
+      if(pinchD>0&&d>0){
+        const f=pinchD/d;
+        const cx=mapVB.x+mapVB.w/2, cy=mapVB.y+mapVB.h/2;
+        mapVB.w=Math.max(120,Math.min(mapVB.w*f,mapVB._W*2.5));
+        mapVB.h=Math.max(90,Math.min(mapVB.h*f,mapVB._H*2.5));
+        mapVB.x=cx-mapVB.w/2; mapVB.y=cy-mapVB.h/2;
+        aplicarVB();
+      }
+      pinchD=d;
+    } else if(dragging&&pts.size===1){
+      const rect=s.getBoundingClientRect();
+      const sx=mapVB.w/rect.width, sy=mapVB.h/rect.height;
+      const dx=ev.clientX-lx, dy=ev.clientY-ly;
+      if(Math.abs(dx)>4||Math.abs(dy)>4)svgMoved=true; // fue arrastre, no tap
+      mapVB.x-=dx*sx;
+      mapVB.y-=dy*sy;
+      lx=ev.clientX;ly=ev.clientY;
+      aplicarVB();
+    }
+  });
+  const up=ev=>{
+    // Tap sin arrastre sobre un nodo con símbolo → toggle
+    // (usamos downTarget porque setPointerCapture cambia ev.target al SVG)
+    if(!svgMoved&&pts.size===1&&downTarget){
+      let t=downTarget;
+      while(t&&t!==s){
+        const dt=t.getAttribute?t.getAttribute('data-toggle'):null;
+        if(dt!==null&&dt!==undefined&&dt!==''){
+          if(nodosCerrados.has(dt))nodosCerrados.delete(dt);
+          else nodosCerrados.add(dt);
+          pts.delete(ev.pointerId);dragging=false;pinchD=0;downTarget=null;
+          renderMapaDetalle();
+          return;
+        }
+        t=t.parentNode;
+      }
+    }
+    downTarget=null;
+    pts.delete(ev.pointerId);if(pts.size<2)pinchD=0;if(pts.size===0)dragging=false;
+  };
+  s.addEventListener('pointerup',up);
+  s.addEventListener('pointercancel',ev=>{pts.delete(ev.pointerId);if(pts.size<2)pinchD=0;if(pts.size===0)dragging=false;});
+}
+
+function toggleNodo(ps){
+  if(nodosCerrados.has(ps))nodosCerrados.delete(ps);
+  else nodosCerrados.add(ps);
+  renderMapaDetalle();
+}
+function iniciarEdicion(tipo,_unused,path){
+  editandoNodo={tipo,path:path||null};
+  renderMapaDetalle();
+}
+function cancelarEdicion(){
+  editandoNodo=null;
+  renderMapaDetalle();
+}
+function guardarEdicion(){
+  const el=document.getElementById('editInput');
+  if(!el||!editandoNodo)return;
+  const v=el.value.trim();
+  const m=mapas[mapaActivo];
+  const e=editandoNodo;
+  if(e.tipo==='titulo'){ if(v)m.titulo=v; }
+  else if(e.tipo==='rama'){ if(v)m.ramas[e.path[0]].texto=v; }
+  else if(e.tipo==='nodo'){ if(v)nodoPorPath(m,e.path).texto=v; }
+  else if(e.tipo==='nuevaRama'){ if(!v){toast('Escribe un nombre');return;} m.ramas.push({texto:v,color:MAPA_COLORS[m.ramas.length%MAPA_COLORS.length],hijos:[]}); }
+  else if(e.tipo==='nuevoNodo'){
+    if(!v){toast('Escribe tu idea');return;}
+    let padre;
+    if(e.path.length===1) padre=m.ramas[e.path[0]]; // raíz de rama
+    else padre=nodoPorPath(m,e.path);
+    if(!padre.hijos)padre.hijos=[];
+    padre.hijos.push({texto:v,hijos:[]});
+    nodosCerrados.delete(pathStr(e.path)); // abrir el nodo padre para ver la nueva idea
+  }
+  editandoNodo=null;
+  persist();
+  renderMapaDetalle();
+}
+
+function scrollRama(ri){
+  const el=document.getElementById('rama'+ri);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function agregarRama(){ iniciarEdicion('nuevaRama'); }
+function eliminarRama(ri){
+  const r=mapas[mapaActivo].ramas[ri];
+  if(!confirm('¿Eliminar la rama "'+r.texto+'" y sus ideas?'))return;
+  mapas[mapaActivo].ramas.splice(ri,1);
+  editandoNodo=null;
+  persist();renderMapaDetalle();
+}
+function eliminarNodo(path){
+  const m=mapas[mapaActivo];
+  const nd=nodoPorPath(m,path);
+  if(nd.hijos&&nd.hijos.length&&!confirm('Esta idea tiene '+nd.hijos.length+' sub-ideas adentro. ¿Eliminar todo?'))return;
+  let padre;
+  if(path.length===2) padre=m.ramas[path[0]];
+  else padre=nodoPorPath(m,path.slice(0,-1));
+  padre.hijos.splice(path[path.length-1],1);
+  editandoNodo=null;
+  persist();renderMapaDetalle();
 }
 
 // ================= METAS / COUNTDOWN =================
@@ -1500,7 +2259,7 @@ function openAhorroSheet(){
 }
 
 function exportData(){
-  const blob=new Blob([JSON.stringify({txs,habits,fijos,goals,ahorroAcumulado},null,2)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({txs,habits,fijos,goals,mapas,ahorroAcumulado},null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');
   a.href=url;a.download='mi-vida-respaldo.json';a.click();
   toast('Respaldo descargado ✓');
@@ -1508,7 +2267,7 @@ function exportData(){
 function importData(e){
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=()=>{try{const d=JSON.parse(r.result);if(d.txs)txs=d.txs;if(d.habits)habits=d.habits;if(d.fijos)fijos=d.fijos;if(d.goals)goals=d.goals;if(d.ahorroAcumulado)ahorroAcumulado=d.ahorroAcumulado;persist();toast('Datos restaurados ✓');setWorld('fin');}catch(err){toast('Archivo no válido');}};
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(d.txs)txs=d.txs;if(d.habits)habits=d.habits;if(d.fijos)fijos=d.fijos;if(d.goals)goals=d.goals;if(d.mapas)mapas=d.mapas;if(d.ahorroAcumulado)ahorroAcumulado=d.ahorroAcumulado;persist();toast('Datos restaurados ✓');setWorld('fin');}catch(err){toast('Archivo no válido');}};
   r.readAsText(f);
 }
 function clearAll(){
