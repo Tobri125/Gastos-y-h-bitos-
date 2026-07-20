@@ -59,6 +59,41 @@
   .stat.green .stat-val{color:var(--green)}.stat.red .stat-val{color:var(--red)}
   .stat.blue .stat-val{color:var(--blue)}.stat.orange .stat-val{color:var(--orange)}
   .stat-sub{font-size:9px;color:var(--faint)}
+  /* ===== KPIs modernos (hero + pills + strip) ===== */
+  .kpi-hero{background:var(--dark);border-radius:18px;padding:18px;margin-bottom:10px}
+  .kpi-hero-top{display:flex;justify-content:space-between;align-items:center}
+  .kpi-hero-val{font-size:29px;font-weight:800;color:#fff;margin:4px 0 12px}
+  .kpi-hero-bar{height:8px;background:#334155;border-radius:5px;overflow:hidden;display:flex}
+  .kpi-hero-bar>div{height:100%}
+  .kpi-hero-legend{display:flex;justify-content:space-between;margin-top:7px;font-size:10px}
+  .kpi-hero-empty{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .kpi-hero-dash{font-size:29px;font-weight:800;color:#64748b;line-height:1}
+  .kpi-hero-sub{font-size:11px;color:#8fa0b5;margin-top:3px}
+  .kpi-hero-btn{background:var(--blue);color:#fff;font-size:12px;font-weight:600;padding:9px 14px;border-radius:10px;white-space:nowrap;cursor:pointer;flex-shrink:0}
+  .kpi-card{border-radius:16px;padding:14px;cursor:pointer;transition:.2s}
+  .kpi-card.in{background:#ecfdf5}
+  .kpi-card.out{background:#fef2f2}
+  .kpi-lab{font-size:11px;color:var(--muted)}
+  .kpi-val{font-size:20px;font-weight:800;margin-top:4px}
+  .kpi-card.in .kpi-val{color:var(--green)}
+  .kpi-card.out .kpi-val{color:var(--red)}
+  .kpi-val.sm{font-size:16px;color:var(--orange)}
+  .pill{display:inline-flex;align-items:center;gap:3px;margin-top:8px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px}
+  .pill.good{background:#d1fae5;color:#047857}
+  .pill.bad{background:#fee2e2;color:#b91c1c}
+  .pill.neutral{background:var(--line);color:var(--muted)}
+  .kpi-strip{background:#fff;border-radius:14px;padding:13px 15px;box-shadow:0 1px 3px rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;cursor:pointer}
+  .kpi-strip-l{display:flex;align-items:center;gap:10px}
+  .kpi-strip-ic{width:34px;height:34px;border-radius:10px;background:#fffbeb;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .kpi-strip-a{font-size:11px;color:var(--blue)}
+  /* Anillos por categoría (spending parameters) */
+  .ring-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+  .ring-cell{display:flex;align-items:center;gap:10px;min-width:0}
+  .ring-cell svg{flex-shrink:0}
+  .ring-tx{min-width:0}
+  .ring-nm{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ring-amt{font-size:13px;font-weight:700;color:var(--dark)}
+  .ring-more{display:block;text-align:center;font-size:12px;color:var(--blue);margin-top:16px;cursor:pointer;text-decoration:none}
   
   /* DONUT */
   .donut-row{display:flex;align-items:center;gap:16px}
@@ -74,7 +109,7 @@
   .leg-pct{color:var(--faint);min-width:28px;text-align:right}
   
   /* ACTIONS */
-  .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:8px}
   .act{text-align:center;cursor:pointer}
   .act:active{transform:scale(.95)}
   .act-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 6px}
@@ -88,6 +123,45 @@
   .item-name{font-size:13px;font-weight:500;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .item-date{font-size:10px;color:var(--faint);margin-top:2px}
   .item-amt{font-size:14px;font-weight:700;text-align:right;white-space:nowrap}
+  /* ===== RESUMEN: viaje de tu plata ===== */
+  .rz-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .rz-mc{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .rz-mc .lab{font-size:11px;color:var(--muted)}
+  .rz-mc .val{font-size:20px;font-weight:800;margin-top:2px}
+  .rz-mc .sub{font-size:11px;color:var(--faint);margin-top:2px}
+  .rz-flow{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .rz-flow h3{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:baseline}
+  .rz-flow h3 span{font-size:11px;color:var(--faint);font-weight:400}
+  .rz-in{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .rz-in .nm{width:96px;font-size:12px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .rz-in .track{flex:1;height:22px;background:var(--line);border-radius:6px;overflow:hidden}
+  .rz-in .fill{height:100%;background:var(--green);border-radius:6px}
+  .rz-in .amt{width:82px;text-align:right;font-size:12px;font-weight:700;color:var(--green)}
+  .rz-sub{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--dark);font-weight:700;margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0}
+  .rz-sub .m{color:var(--green)}
+  .rz-hint{font-size:10px;color:var(--faint);margin:2px 0 8px 104px}
+  .rz-step{margin-bottom:6px}
+  .rz-row{display:flex;align-items:center;gap:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .rz-row .nm{width:96px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .rz-row .chv{font-size:9px;color:var(--faint);transition:transform .15s;flex-shrink:0}
+  .rz-row .track{flex:1;height:20px;background:var(--line);border-radius:6px;overflow:hidden}
+  .rz-row .fill{height:100%;background:#fca5a5;border-radius:6px}
+  .rz-row .amt{width:82px;text-align:right;font-size:11px;color:var(--red)}
+  .rz-row.save .fill{background:#6ee7b7}
+  .rz-row.save .amt{color:var(--green)}
+  .rz-det{display:none;padding:6px 0 6px 104px}
+  .rz-det .d{display:flex;justify-content:space-between;gap:10px;font-size:11px;padding:3px 0;color:var(--muted)}
+  .rz-det .d span:first-child{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .rz-det .d .m{color:var(--dark);font-weight:600;white-space:nowrap}
+  .rz-final{border-top:1px solid var(--line);padding-top:14px;margin-top:8px;display:flex;align-items:center;gap:8px}
+  .rz-final .nm{width:96px;font-size:14px;font-weight:700;color:var(--blue)}
+  .rz-final .track{flex:1;height:28px;background:var(--line);border-radius:6px;overflow:hidden}
+  .rz-final .fill{height:100%;background:var(--blue);border-radius:6px}
+  .rz-final .amt{width:82px;text-align:right;font-size:16px;font-weight:800;color:var(--blue)}
+  .rz-comp{display:flex;align-items:center;gap:8px;padding:11px 12px;border-radius:12px;font-size:12px;line-height:1.4}
+  .rz-comp.good{background:#ecfdf5;color:#047857}
+  .rz-comp.bad{background:#fef2f2;color:#b91c1c}
+  .rz-comp.neutral{background:var(--line);color:var(--muted)}
   .item-amt.in{color:var(--green)}.item-amt.out{color:var(--red)}
   
   /* TOGGLE SWITCH (fijos) */
@@ -398,11 +472,14 @@
     <!-- ===== FINANZAS: INICIO ===== -->
     <div id="v_inicio" class="view on">
       <div class="ciclo-banner" id="cicloBanner"></div>
-      <div class="grid2">
-        <div class="stat green" onclick="nuevoTx('ingreso')"><div class="stat-top"><span class="stat-lab">Ingresos del ciclo</span><div class="stat-ic">↑</div></div><div class="stat-val" id="sIngresos">$0</div><div class="stat-sub">Total recibido</div></div>
-        <div class="stat red" onclick="nuevoTx('gasto')"><div class="stat-top"><span class="stat-lab">Gastos pagados</span><div class="stat-ic">↓</div></div><div class="stat-val" id="sGastosPagados">$0</div><div class="stat-sub">Ya desembolsados</div></div>
-        <div class="stat blue"><div class="stat-top"><span class="stat-lab">Disponible</span><div class="stat-ic">💵</div></div><div class="stat-val" id="sDiferencial">$0</div><div class="stat-sub">Ingresos − gastos − ahorro</div></div>
-        <div class="stat orange" onclick="setScreen('v_settings')"><div class="stat-top"><span class="stat-lab">Ahorro acumulado</span><div class="stat-ic">🏦</div></div><div class="stat-val" id="sAhorro">$0</div><div class="stat-sub">Acumulado</div></div>
+      <div class="kpi-hero" id="kpiHero"></div>
+      <div class="grid2" style="margin-bottom:10px">
+        <div class="kpi-card in" onclick="nuevoTx('ingreso')"><div class="kpi-lab">Ingresos del ciclo</div><div class="kpi-val" id="sIngresos">$0</div><div id="trendIng"></div></div>
+        <div class="kpi-card out" onclick="nuevoTx('gasto')"><div class="kpi-lab">Gastos pagados</div><div class="kpi-val" id="sGastosPagados">$0</div><div id="trendGas"></div></div>
+      </div>
+      <div class="kpi-strip" onclick="setScreen('v_settings')">
+        <div class="kpi-strip-l"><span class="kpi-strip-ic">🏦</span><div><div class="kpi-lab">Ahorro acumulado</div><div class="kpi-val sm" id="sAhorro">$0</div></div></div>
+        <span class="kpi-strip-a">Ajustar ›</span>
       </div>
       <div class="card">
         <div class="sec-head"><h2>Gastos por categoría</h2></div>
@@ -411,8 +488,6 @@
       <div class="card">
         <h2 style="font-size:15px;font-weight:600;margin-bottom:14px">Acciones rápidas</h2>
         <div class="actions">
-          <div class="act" onclick="nuevoTx('gasto')"><div class="act-ic" style="background:#fdeded">➖</div><div class="act-lab">Nuevo gasto</div></div>
-          <div class="act" onclick="nuevoTx('ingreso')"><div class="act-ic" style="background:#e8f7f0">➕</div><div class="act-lab">Nuevo ingreso</div></div>
           <div class="act" onclick="setScreen('v_fijos')"><div class="act-ic" style="background:#fdf4e8">📋</div><div class="act-lab">Gastos fijos</div></div>
           <div class="act" onclick="setScreen('v_resumen')"><div class="act-ic" style="background:#f3e8fd">📊</div><div class="act-lab">Resumen</div></div>
         </div>
@@ -468,8 +543,8 @@
 
     <!-- ===== FINANZAS: RESUMEN ===== -->
     <div id="v_resumen" class="view">
-      <div class="sec-head"><h2>Resumen mensual</h2></div>
-      <div class="card"><div id="resSection"></div></div>
+      <div class="sec-head"><h2>Resumen del mes</h2></div>
+      <div id="resSection"></div>
     </div>
 
     <!-- ===== HÁBITOS: RESUMEN ===== -->
@@ -571,7 +646,7 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v18f-fijos-emoji';
+const VERSION='v18l-solo-fab';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
@@ -936,12 +1011,50 @@ function totals(){
 }
 function fmt(n){return '$'+n.toLocaleString('es-CL');}
 
+function kpiPill(cur,prev,buenoSiBaja,lbl){
+  if(!prev||prev<=0||!cur||cur<=0) return '';
+  const diff=cur-prev, p=Math.round(Math.abs(diff)/prev*100);
+  if(p===0) return `<span class="pill neutral">= igual que ${lbl}</span>`;
+  const sube=diff>0, bueno=buenoSiBaja?!sube:sube;
+  return `<span class="pill ${bueno?'good':'bad'}">${sube?'▲':'▼'} ${p}% vs ${lbl}</span>`;
+}
+function renderKpis(t){
+  const key=cicloActivo||cicloDeHoy();
+  const ing=t.ing, gasT=t.gasTotal, disp=t.dif;
+  // Ciclo anterior para tendencias
+  const ciclos=ciclosConDatos(), idx=ciclos.indexOf(key);
+  const prevKey=(idx>=0&&idx+1<ciclos.length)?ciclos[idx+1]:null;
+  let prevIng=0, prevGas=0, prevLbl='';
+  if(prevKey){
+    prevIng=txsDeCiclo(prevKey).filter(x=>x.tipo==='ingreso').reduce((a,x)=>a+x.monto,0);
+    prevGas=txsDeCiclo(prevKey).filter(x=>x.tipo==='gasto').reduce((a,x)=>a+x.monto,0);
+    prevLbl=MES[rangoCiclo(prevKey).inicio.getMonth()];
+  }
+  // Hero disponible
+  const hero=document.getElementById('kpiHero');
+  if(ing<=0){
+    hero.innerHTML=`<div class="kpi-hero-empty">
+      <div><div class="kpi-lab" style="color:#8fa0b5">Disponible del ciclo</div><div class="kpi-hero-dash">—</div><div class="kpi-hero-sub">Registra tu sueldo con el + de abajo para calcularlo</div></div>
+    </div>`;
+  } else {
+    const gastPct=Math.min(100,Math.round(gasT/ing*100)), librePct=Math.max(0,100-gastPct);
+    hero.innerHTML=`
+      <div class="kpi-hero-top"><span class="kpi-lab" style="color:#8fa0b5">Disponible del ciclo</span><span style="font-size:10px;color:#8fa0b5">${cicloLabel(key)}</span></div>
+      <div class="kpi-hero-val" style="color:${disp<0?'#f87171':'#fff'}">${fmt(disp)}</div>
+      <div class="kpi-hero-bar"><div style="width:${gastPct}%;background:#f87171"></div></div>
+      <div class="kpi-hero-legend"><span style="color:#fca5a5">Gastado ${fmt(gasT)} · ${gastPct}%</span><span style="color:#6ee7b7">Libre ${librePct}%</span></div>`;
+  }
+  // Pills de tendencia (ingresos vs mes previo; gastos diarios vs mes previo)
+  const ti=document.getElementById('trendIng'), tg=document.getElementById('trendGas');
+  if(ti) ti.innerHTML=kpiPill(ing,prevIng,false,prevLbl);
+  if(tg) tg.innerHTML=kpiPill(t.gas,prevGas,true,prevLbl);
+}
 function renderInicio(){
   const t=totals();
   document.getElementById('sIngresos').textContent=fmt(t.ing);
   document.getElementById('sGastosPagados').textContent=fmt(t.gasTotal);
-  document.getElementById('sDiferencial').textContent=fmt(t.dif);
   document.getElementById('sAhorro').textContent=fmt(ahorroAcumulado);
+  renderKpis(t);
   renderCicloBanner();
   renderDonut();
   renderMov();
@@ -982,21 +1095,27 @@ function catTotals(){
 }
 
 function renderDonut(){
-  const cats=catTotals();
+  const map={};
+  txsDeCiclo(cicloActivo||cicloDeHoy()).filter(t=>t.tipo==='gasto').forEach(t=>{
+    const c=t.cat||'✦ Otros'; map[c]=(map[c]||0)+t.monto;
+  });
+  const cats=Object.entries(map).sort((a,b)=>b[1]-a[1]);
   const total=cats.reduce((a,c)=>a+c[1],0);
+  const el=document.getElementById('donutSection');
+  if(!total){el.innerHTML='<div class="empty"><div class="empty-ic">🍩</div><p>Sin gastos registrados aún<br>Toca + para registrar</p></div>';return;}
   const colors=['#3b82f6','#f59e0b','#10b981','#8b5cf6','#ec4899','#64748b'];
-  if(!total){document.getElementById('donutSection').innerHTML='<div class="empty"><div class="empty-ic">🍩</div><p>Sin gastos registrados aún</p></div>';return;}
-  let offset=0;
-  const segs=cats.slice(0,6).map((c,i)=>{
-    const pct=(c[1]/total)*100;
-    const seg=`<circle cx="18" cy="18" r="15.5" fill="none" stroke="${colors[i]}" stroke-width="4" stroke-dasharray="${pct} ${100-pct}" stroke-dashoffset="${-offset}" transform="rotate(-90 18 18)"/>`;
-    offset+=pct;return seg;
+  const C=163.36;
+  const rings=cats.slice(0,4).map((c,i)=>{
+    const pct=Math.round(c[1]/total*100);
+    const len=(c[1]/total*C).toFixed(1);
+    return `<div class="ring-cell">
+      <svg viewBox="0 0 64 64" width="54" height="54"><circle cx="32" cy="32" r="26" fill="none" stroke="#f1f5f9" stroke-width="6"/><circle cx="32" cy="32" r="26" fill="none" stroke="${colors[i]}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${len} ${C}" transform="rotate(-90 32 32)"/><text x="32" y="37" text-anchor="middle" fill="#1e2a3a" font-size="13" font-weight="700">${pct}%</text></svg>
+      <div class="ring-tx"><div class="ring-nm">${catEmoji(c[0])} ${catNombre(c[0])}</div><div class="ring-amt">${fmt(c[1])}</div></div>
+    </div>`;
   }).join('');
-  const legend=cats.slice(0,6).map((c,i)=>{
-    const pct=Math.round((c[1]/total)*100);
-    return `<div class="leg-item"><div class="leg-dot" style="background:${colors[i]}"></div><span class="leg-name">${c[0]}</span><span class="leg-val">${fmt(c[1])}</span><span class="leg-pct">${pct}%</span></div>`;
-  }).join('');
-  document.getElementById('donutSection').innerHTML=`<div class="donut-row"><div class="donut"><svg viewBox="0 0 36 36" width="110" height="110"><circle cx="18" cy="18" r="15.5" fill="none" stroke="#f1f5f9" stroke-width="4"/>${segs}</svg><div class="donut-c"><b>${fmt(total)}</b><span>Total</span></div></div><div class="legend">${legend}</div></div>`;
+  const restantes=cats.length-4;
+  const link=`<a class="ring-more" onclick="setScreen('v_resumen')">${restantes>0?`y ${restantes} categoría${restantes>1?'s':''} más · `:''}ver el viaje de tu plata ›</a>`;
+  el.innerHTML=`<div class="ring-grid">${rings}</div>${link}`;
 }
 
 function renderMov(){
@@ -1194,18 +1313,116 @@ function renderHist(){
   document.getElementById('histList').innerHTML=html;
 }
 
+function catEmoji(cat){return (cat||'✦').split(' ')[0];}
+function catNombre(cat){return (cat||'✦ Otros').replace(/^[^\s]+\s/,'');}
+function diasCiclo(key){
+  const r=rangoCiclo(key), msDia=86400000;
+  const ini=new Date(r.inicio); ini.setHours(0,0,0,0);
+  const fin=new Date(r.fin); fin.setHours(0,0,0,0);
+  const hoy=new Date(); hoy.setHours(0,0,0,0);
+  const total=Math.round((fin-ini)/msDia)+1;
+  let transcurridos, restantes;
+  if(hoy<ini){transcurridos=0; restantes=total;}
+  else if(hoy>fin){transcurridos=total; restantes=0;}
+  else {transcurridos=Math.round((hoy-ini)/msDia)+1; restantes=total-transcurridos;}
+  return {total, transcurridos:Math.max(0,transcurridos), restantes:Math.max(0,restantes), esActual:(hoy>=ini&&hoy<=fin)};
+}
+function togglePaso(id){
+  const d=document.getElementById('rzdet-'+id), c=document.getElementById('rzchv-'+id);
+  if(!d)return;
+  const abierto=d.style.display==='block';
+  d.style.display=abierto?'none':'block';
+  if(c)c.style.transform=abierto?'':'rotate(90deg)';
+}
+function rzPaso(id,emoji,nombre,monto,saldoPct,detHTML,save){
+  return `<div class="rz-step">
+    <div class="rz-row ${save?'save':''}" onclick="togglePaso('${id}')">
+      <div class="nm">${detHTML?`<span class="chv" id="rzchv-${id}">▶</span>`:''}${emoji} ${nombre}</div>
+      <div class="track"><div class="fill" style="width:${saldoPct}%"></div></div>
+      <div class="amt">−${fmt(monto)}</div>
+    </div>
+    ${detHTML?`<div class="rz-det" id="rzdet-${id}">${detHTML}</div>`:''}
+  </div>`;
+}
 function renderResumen(){
-  const t=totals();
-  const gas_diarios=t.gas;
-  const nMovs=txsDeCiclo(cicloActivo||cicloDeHoy()).length;
-  document.getElementById('resSection').innerHTML=`
-    <div class="item"><div class="item-tx"><div class="item-name">Total ingresos</div></div><div class="item-amt in">${fmt(t.ing)}</div></div>
-    <div class="item"><div class="item-tx"><div class="item-name">Gastos diarios registrados</div></div><div class="item-amt out">${fmt(gas_diarios)}</div></div>
-    <div class="item"><div class="item-tx"><div class="item-name">Gastos fijos pagados</div></div><div class="item-amt out">${fmt(t.gasPagados)}</div></div>
-    <div class="item"><div class="item-tx"><div class="item-name" style="font-weight:700">Disponible</div></div><div class="item-amt" style="color:var(--blue)">${fmt(t.dif)}</div></div>
-    <div class="item"><div class="item-tx"><div class="item-name">Ahorro acumulado</div></div><div class="item-amt" style="color:var(--green)">${fmt(ahorroAcumulado)}</div></div>
-    <div class="item"><div class="item-tx"><div class="item-name">Movimientos del ciclo</div></div><div class="item-amt" style="color:var(--dark)}">${nMovs}</div></div>
-  `;
+  const key=cicloActivo||cicloDeHoy();
+  const t=totals(), ing=t.ing, ref=ing>0?ing:1;
+  const tc=txsDeCiclo(key);
+
+  // Agrupar gastos diarios por categoría
+  const porCat={};
+  tc.filter(x=>x.tipo==='gasto').forEach(x=>{
+    const c=x.cat||'✦ Otros';
+    if(!porCat[c])porCat[c]={total:0,items:[]};
+    porCat[c].total+=x.monto; porCat[c].items.push(x);
+  });
+  const cats=Object.entries(porCat).sort((a,b)=>b[1].total-a[1].total);
+  const entradas=tc.filter(x=>x.tipo==='ingreso').sort((a,b)=>b.monto-a.monto);
+
+  // Días y ritmo
+  const d=diasCiclo(key);
+  const disponible=t.dif;
+  const porDia=d.restantes>0?Math.round(disponible/d.restantes):0;
+  const ritmo=d.transcurridos>0?Math.round(t.gasTotal/d.transcurridos):0;
+  const apurado=porDia>0?ritmo>porDia:true;
+
+  // Header
+  let header;
+  if(d.esActual && d.restantes>0){
+    header=`<div class="rz-metrics">
+      <div class="rz-mc"><div class="lab">Puedes gastar</div><div class="val" style="color:var(--blue)">${fmt(Math.max(0,porDia))}<span style="font-size:12px;color:var(--faint);font-weight:400">/día</span></div><div class="sub">quedan ${d.restantes} ${d.restantes===1?'día':'días'}</div></div>
+      <div class="rz-mc"><div class="lab">Ritmo real</div><div class="val">${fmt(ritmo)}<span style="font-size:12px;color:var(--faint);font-weight:400">/día</span></div><div class="sub" style="color:${apurado?'var(--red)':'var(--green)'}">${apurado?'vas apurado':'vas holgado'}</div></div>
+    </div>`;
+  } else {
+    header=`<div class="rz-metrics">
+      <div class="rz-mc"><div class="lab">Ingresos</div><div class="val" style="color:var(--green)">${fmt(ing)}</div></div>
+      <div class="rz-mc"><div class="lab">Gastado</div><div class="val" style="color:var(--red)">${fmt(t.gasTotal)}</div></div>
+    </div>`;
+  }
+
+  // Flujo (saldo que se drena)
+  let saldo=ing;
+  const pct=v=>Math.max(3,Math.round(v/ref*100));
+  let pasos='';
+  if(t.gasPagados>0){
+    saldo-=t.gasPagados;
+    const det=fijos.filter(f=>f.pagado).map(f=>`<div class="d"><span>${emojiFijo(f)} ${f.nombre}</span><span class="m">${fmt(f.monto)}</span></div>`).join('');
+    pasos+=rzPaso('fijos','📋','Fijos',t.gasPagados,pct(saldo),det,false);
+  }
+  cats.forEach(([cat,info],i)=>{
+    saldo-=info.total;
+    const det=info.items.map(x=>`<div class="d"><span>${x.detalle||catNombre(cat)} · ${x.fecha}</span><span class="m">${fmt(x.monto)}</span></div>`).join('');
+    pasos+=rzPaso('c'+i,catEmoji(cat),catNombre(cat),info.total,pct(saldo),det,false);
+  });
+  if(ahorroAcumulado>0){
+    saldo-=ahorroAcumulado;
+    pasos+=rzPaso('ahorro','💰','Ahorro',ahorroAcumulado,pct(saldo),'',true);
+  }
+
+  const flujo=`<div class="rz-flow">
+    <h3>El viaje de tu plata <span>${cicloLabel(key)}</span></h3>
+    ${entradas.map(e=>`<div class="rz-in"><div class="nm">${catEmoji(e.cat)} ${catNombre(e.cat)}</div><div class="track"><div class="fill" style="width:${Math.max(6,Math.round(e.monto/ref*100))}%"></div></div><div class="amt">+${fmt(e.monto)}</div></div>`).join('')}
+    <div class="rz-sub"><span>Total que entró</span><span class="m">+${fmt(ing)}</span></div>
+    <div class="rz-hint">saldo que te queda después de cada gasto ↓</div>
+    ${pasos}
+    <div class="rz-final"><div class="nm">Te quedó</div><div class="track"><div class="fill" style="width:${pct(Math.max(disponible,0))}%"></div></div><div class="amt" style="color:${disponible<0?'var(--red)':'var(--blue)'}">${fmt(disponible)}</div></div>
+  </div>`;
+
+  // Comparación con ciclo anterior (solo gastos diarios, que sí tienen historial)
+  let comp='';
+  const ciclos=ciclosConDatos(), idx=ciclos.indexOf(key);
+  const prevKey=(idx>=0 && idx+1<ciclos.length)?ciclos[idx+1]:null;
+  if(prevKey){
+    const prevGas=txsDeCiclo(prevKey).filter(x=>x.tipo==='gasto').reduce((a,x)=>a+x.monto,0);
+    if(prevGas>0){
+      const diff=t.gas-prevGas, p=Math.round(Math.abs(diff)/prevGas*100);
+      if(diff<0) comp=`<div class="rz-comp good">📉 Gastaste <b>${p}% menos</b> que el ciclo anterior. Vas mejorando.</div>`;
+      else if(diff>0) comp=`<div class="rz-comp bad">📈 Gastaste <b>${p}% más</b> que el ciclo anterior. Ojo con eso.</div>`;
+      else comp=`<div class="rz-comp neutral">Gastaste casi lo mismo que el ciclo anterior.</div>`;
+    }
+  }
+
+  document.getElementById('resSection').innerHTML = header + flujo + comp;
 }
 
 // ================= HÁBITOS =================
