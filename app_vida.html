@@ -83,7 +83,7 @@
   /* MOVEMENTS / PAYMENTS */
   .item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--line)}
   .item:last-child{border:none}
-  .item-ic{width:38px;height:38px;border-radius:11px;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+  .item-ic{width:38px;height:38px;border-radius:11px;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;overflow:hidden;line-height:1}
   .item-tx{flex:1;min-width:0}
   .item-name{font-size:13px;font-weight:500;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .item-date{font-size:10px;color:var(--faint);margin-top:2px}
@@ -571,7 +571,7 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v18e-tap-fix2';
+const VERSION='v18f-fijos-emoji';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
@@ -1014,9 +1014,27 @@ function renderMov(){
   }).join('') : '<div class="empty"><div class="empty-ic">📊</div><p>Sin movimientos en este ciclo<br>Toca + para registrar</p></div>';
 }
 
+function emojiFijo(f){
+  if(f.emoji) return f.emoji;
+  const n=(f.nombre||'').toLowerCase();
+  if(/auto|cuota|cr[eé]dito|veh[ií]culo|patente|permiso/.test(n)) return '🚗';
+  if(/seguro/.test(n)) return '🛡️';
+  if(/estacionamiento|parking/.test(n)) return '🅿️';
+  if(/bodega/.test(n)) return '📦';
+  if(/claude|chatgpt|gpt|openai|anthropic|\bia\b/.test(n)) return '🤖';
+  if(/youtube|netflix|spotify|disney|hbo|prime|max\b|streaming/.test(n)) return '📺';
+  if(/claro|entel|movistar|wom|vtr|celular|tel[eé]fono|plan|internet|hogar|fibra/.test(n)) return '📱';
+  if(/luz|electricidad|enel/.test(n)) return '💡';
+  if(/agua|aguas/.test(n)) return '💧';
+  if(/\bgas\b|metrogas|lipigas|abastible/.test(n)) return '🔥';
+  if(/arriendo|renta|dividendo|casa|depto|departamento/.test(n)) return '🏠';
+  if(/gimnasio|\bgym\b|smart\s?fit/.test(n)) return '🏋️';
+  if(/tarjeta|banco|comisi[oó]n/.test(n)) return '🏦';
+  return '💳';
+}
 function renderFijos(){
   document.getElementById('fijosList').innerHTML = fijos.length ? fijos.map((f,i)=>`
-    <div class="item"><div class="item-ic">${f.emoji}</div><div class="item-tx"><div class="item-name">${f.nombre}</div><div class="item-date">${fmt(f.monto)}</div></div><div class="sw ${f.pagado?'on':''}" onclick="toggleFijo(${i})"><div class="sw-ball"></div></div></div>
+    <div class="item"><div class="item-ic">${emojiFijo(f)}</div><div class="item-tx"><div class="item-name">${f.nombre}</div><div class="item-date">${fmt(f.monto)}</div></div><div class="sw ${f.pagado?'on':''}" onclick="toggleFijo(${i})"><div class="sw-ball"></div></div></div>
   `).join('') : '<div class="empty"><div class="empty-ic">📋</div><p>Sin gastos fijos aún<br>Toca "+ Agregar" para crear uno</p></div>';
 }
 function toggleFijo(i){fijos[i].pagado=!fijos[i].pagado;persist();renderFijos();toast(fijos[i].pagado?'Marcado como pagado ✓':'Marcado pendiente');}
