@@ -198,6 +198,7 @@
   .detalle-input::placeholder{color:#b8c0cc}
   .ciclo-sel{margin-bottom:14px}
   .ciclo-sel-lab{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .fecha-sel{margin-bottom:14px}
   .ciclo-select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;font-size:15px;background:#fff;color:var(--dark);outline:none;box-sizing:border-box}
   .ciclo-fechas{display:flex;gap:10px}
   .ciclo-fecha-campo{flex:1;display:flex;flex-direction:column;gap:4px}
@@ -506,6 +507,10 @@
       <div class="chips" id="txChips"></div>
       <div class="amount-disp" id="txAmount">$0</div>
       <input id="txDetalle" class="detalle-input" type="text" placeholder="Detalle (ej: pan con café, almuerzo con Caro...)" maxlength="60">
+      <div class="fecha-sel">
+        <label class="ciclo-sel-lab">📅 Fecha del movimiento</label>
+        <input type="date" id="txFecha" class="ciclo-date">
+      </div>
       <div id="txCicloSel" class="ciclo-sel" style="display:none">
         <label class="ciclo-sel-lab">Ciclo de este ingreso</label>
         <div class="ciclo-fechas">
@@ -639,7 +644,7 @@
 
 <script>
 const SKEY='miVidaClaraData';
-const VERSION='v18n-sw-fix';
+const VERSION='v18o-fecha-manual';
 
 // ---- DATOS INICIALES (junio 2026, desde tu planilla) ----
 const SEED_TXS=[
@@ -1183,6 +1188,18 @@ function poblarSelectorCiclo(){
 function isoDate(d){
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
+function isoDeTx(t){
+  if(t.iso) return t.iso;
+  if(t.fecha){
+    const p=t.fecha.trim().split(/\s+/);
+    const dia=parseInt(p[0]);
+    const mi=MES.indexOf((p[1]||'').toLowerCase());
+    let anio=new Date().getFullYear();
+    if(t.ciclo && /^\d{4}-\d{2}$/.test(t.ciclo)) anio=parseInt(t.ciclo.slice(0,4));
+    if(dia>0 && mi>=0) return isoDate(new Date(anio,mi,dia));
+  }
+  return isoDate(new Date());
+}
 function addDigit(d){txAmt=(txAmt+d).slice(0,12);document.getElementById('txAmount').textContent=fmt(parseInt(txAmt||'0'));}
 function delDigit(){txAmt=txAmt.slice(0,-1);document.getElementById('txAmount').textContent=fmt(parseInt(txAmt||'0'));}
 let editandoTx=null; // índice del movimiento en edición (null = nuevo)
@@ -1192,15 +1209,22 @@ function nuevoTx(modo){
   txAmt='';currentCat='';
   const disp=document.getElementById('txAmount'); if(disp)disp.textContent='$0';
   const det=document.getElementById('txDetalle'); if(det)det.value='';
+  const fe=document.getElementById('txFecha'); if(fe)fe.value=isoDate(new Date());
   setTxMode(modo);
   setScreen('v_registrar');
 }
 function saveTx(){
   if(!txAmt||parseInt(txAmt)===0){toast('Ingresa un monto');return;}
   if(!currentCat){toast('Selecciona una categoría');return;}
-  const now=new Date();
   const detalle=document.getElementById('txDetalle').value.trim();
-  // Leer fechas manuales del ciclo (solo para ingresos)
+  // Fecha elegida del movimiento (por defecto hoy)
+  const fVal=document.getElementById('txFecha').value;
+  let selDate;
+  if(fVal){const pp=fVal.split('-').map(Number); selDate=new Date(pp[0],pp[1]-1,pp[2]);}
+  else selDate=new Date();
+  const fecha=selDate.getDate()+' '+MES[selDate.getMonth()];
+  const iso=isoDate(selDate);
+  // Ciclo manual (solo ingresos)
   let cicloManual=null;
   if(txMode==='ingreso'){
     const ini=document.getElementById('txCicloIni').value;
@@ -1212,20 +1236,17 @@ function saveTx(){
   if(editandoTx!==null){
     const t=txs[editandoTx];
     t.tipo=txMode; t.monto=parseInt(txAmt); t.cat=currentCat; t.detalle=detalle;
+    t.fecha=fecha; t.iso=iso;
     if(cicloManual){ t.ciclo=cicloManual.key; t.cicloIni=cicloManual.ini; t.cicloFin=cicloManual.fin; }
+    else { t.ciclo=cicloDeFecha(selDate); delete t.cicloIni; delete t.cicloFin; }
     cicloActivo=t.ciclo||cicloDeHoy();
     editandoTx=null;
     persist();
     toast('Movimiento actualizado ✓');
   } else {
-    const fecha=now.getDate()+' '+MES[now.getMonth()];
     let ciclo, cicloIni, cicloFin;
-    if(cicloManual){
-      ciclo=cicloManual.key; cicloIni=cicloManual.ini; cicloFin=cicloManual.fin;
-    } else {
-      ciclo=cicloDeFecha(now);
-    }
-    const iso=now.toISOString().slice(0,10);
+    if(cicloManual){ ciclo=cicloManual.key; cicloIni=cicloManual.ini; cicloFin=cicloManual.fin; }
+    else { ciclo=cicloDeFecha(selDate); }
     const mov={tipo:txMode,monto:parseInt(txAmt),cat:currentCat,fecha,detalle,ciclo,iso};
     if(cicloIni){mov.cicloIni=cicloIni; mov.cicloFin=cicloFin;}
     txs.push(mov);
@@ -1248,6 +1269,7 @@ function editarTx(idx){
   renderChips();
   document.getElementById('txAmount').textContent=fmt(t.monto);
   document.getElementById('txDetalle').value=t.detalle||'';
+  document.getElementById('txFecha').value=isoDeTx(t);
   if(t.tipo==='ingreso'){
     document.getElementById('txCicloSel').style.display='block';
     const iniEl=document.getElementById('txCicloIni');
